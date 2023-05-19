@@ -34,6 +34,7 @@ public class menuPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private String nomUsuari;
+	private buscaMinas ventanaBuscaMinas;
 
 	/**
 	 * Launch the application.
@@ -108,9 +109,12 @@ public class menuPrincipal extends JFrame {
 		JButton botonBuscaMinas = new JButton("");
 		botonBuscaMinas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				buscaMinas buscaMinas = new buscaMinas();
-				buscaMinas.setVisible(true);
+				if (ventanaBuscaMinas == null || !ventanaBuscaMinas.isVisible()) {
+					ventanaBuscaMinas = new buscaMinas();
+				}
+				ventanaBuscaMinas.setVisible(true);
 			}
+
 		});
 		botonBuscaMinas.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/buscaminas.jpg")));
 		panelJuegos.add(botonBuscaMinas);
@@ -129,7 +133,7 @@ public class menuPrincipal extends JFrame {
 		botonCerrarSesion.setContentAreaFilled(false);
 		botonCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonCerrarSesion.setForeground(Color.WHITE);
-		botonCerrarSesion.setBackground( new Color(153, 0, 0)); // Cambia el color de fondo a rojo
+		botonCerrarSesion.setBackground(new Color(153, 0, 0)); // Cambia el color de fondo a rojo
 		botonCerrarSesion.setFont(new Font("Arial", Font.BOLD, 15));
 		botonCerrarSesion.setOpaque(true); // Hace que el fondo del botón sea opaco
 		panelBotones.add(botonCerrarSesion);
