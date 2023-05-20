@@ -1,4 +1,4 @@
-package com.proyectoFinal.grupo2;
+package com.proyectoFinal.clases;
 
 public class Usuario {
 	private int id;
