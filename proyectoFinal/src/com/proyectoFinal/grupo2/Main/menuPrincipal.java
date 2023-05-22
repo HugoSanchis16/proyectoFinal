@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.proyectoFinal.grupo2.Juegos.buscaMinas;
+import com.proyectoFinal.grupo2.Juegos.BuscaMinas;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -24,7 +24,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Cursor;
-import javax.swing.border.LineBorder;
 
 public class menuPrincipal extends JFrame {
 
@@ -34,7 +33,7 @@ public class menuPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private String nomUsuari;
-	private buscaMinas ventanaBuscaMinas;
+	private BuscaMinas ventanaBuscaMinas;
 
 	/**
 	 * Launch the application.
@@ -110,7 +109,7 @@ public class menuPrincipal extends JFrame {
 		botonBuscaMinas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (ventanaBuscaMinas == null || !ventanaBuscaMinas.isVisible()) {
-					ventanaBuscaMinas = new buscaMinas();
+					ventanaBuscaMinas = new BuscaMinas();
 				}
 				ventanaBuscaMinas.setVisible(true);
 			}
