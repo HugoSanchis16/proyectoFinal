@@ -6,7 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.proyectoFinal.grupo2.Juegos.BuscaMinas;
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.proyectoFinal.grupo2.Juegos.*;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -18,6 +19,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -39,6 +42,13 @@ public class menuPrincipal extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		try {
+			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -83,7 +93,6 @@ public class menuPrincipal extends JFrame {
 		panelBienvenida.setLayout(new GridLayout(2, 1, 0, 0));
 
 		JLabel labelBienvenida = new JLabel("Bienvenido, " + nomUsuari);
-		labelBienvenida.setOpaque(true);
 		labelBienvenida.setBackground(new Color(255, 255, 255));
 		labelBienvenida.setFont(new Font("Arial", Font.BOLD, 30));
 		labelBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
@@ -91,7 +100,6 @@ public class menuPrincipal extends JFrame {
 		panelBienvenida.add(labelBienvenida);
 
 		JLabel labelSubtitulo = new JLabel("¿Te apetece jugar?");
-		labelSubtitulo.setOpaque(true);
 		labelSubtitulo.setBackground(new Color(255, 255, 255));
 		labelSubtitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		labelSubtitulo.setFont(new Font("Arial", Font.BOLD, 25));
@@ -102,10 +110,12 @@ public class menuPrincipal extends JFrame {
 		panelJuegos.setLayout(new GridLayout(0, 3, 0, 0));
 
 		JButton botonPixelArt = new JButton("");
+		botonPixelArt.setOpaque(false);
 		botonPixelArt.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/pixelArtLogo.JPG")));
 		panelJuegos.add(botonPixelArt);
 
 		JButton botonBuscaMinas = new JButton("");
+		botonBuscaMinas.setOpaque(false);
 		botonBuscaMinas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (ventanaBuscaMinas == null || !ventanaBuscaMinas.isVisible()) {
@@ -119,14 +129,17 @@ public class menuPrincipal extends JFrame {
 		panelJuegos.add(botonBuscaMinas);
 
 		JButton botonJuegoDeLaVida = new JButton("");
+		botonJuegoDeLaVida.setOpaque(false);
 		botonJuegoDeLaVida.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/juegoDeLaVida.jpg")));
 		panelJuegos.add(botonJuegoDeLaVida);
 
 		JPanel panelBotones = new JPanel();
+		panelBotones.setOpaque(false);
 		panelBotones.setBackground(new Color(255, 255, 255));
 		contentPane.add(panelBotones, BorderLayout.SOUTH);
 
 		JButton botonCerrarSesion = new JButton("Cerrar Sesión");
+		botonCerrarSesion.setOpaque(false);
 		botonCerrarSesion.setBorderPainted(false);
 		botonCerrarSesion.setFocusPainted(false);
 		botonCerrarSesion.setContentAreaFilled(false);
@@ -134,7 +147,6 @@ public class menuPrincipal extends JFrame {
 		botonCerrarSesion.setForeground(Color.WHITE);
 		botonCerrarSesion.setBackground(new Color(153, 0, 0)); // Cambia el color de fondo a rojo
 		botonCerrarSesion.setFont(new Font("Arial", Font.BOLD, 15));
-		botonCerrarSesion.setOpaque(true); // Hace que el fondo del botón sea opaco
 		panelBotones.add(botonCerrarSesion);
 	}
 
