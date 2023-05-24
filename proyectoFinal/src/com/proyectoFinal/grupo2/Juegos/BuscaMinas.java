@@ -1,11 +1,8 @@
 package com.proyectoFinal.grupo2.Juegos;
 
-<<<<<<< Updated upstream
 import javax.swing.ImageIcon;
-=======
 import java.awt.Dimension;
 import java.awt.GridLayout;
->>>>>>> Stashed changes
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,17 +15,11 @@ import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.proyectoFinal.grupo2.Clases.Casilla;
 import com.proyectoFinal.grupo2.Clases.TableroBuscaminas;
 import java.awt.BorderLayout;
-<<<<<<< Updated upstream
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GridLayout;
 import java.awt.Image;
-=======
 import java.awt.event.ActionListener;
->>>>>>> Stashed changes
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.Timer;
@@ -45,7 +36,6 @@ public class BuscaMinas extends JFrame {
 	private JPanel contentPane;
 	private int tamanoTauler;
 	private int cantidadMinas;
-<<<<<<< Updated upstream
 	private JButton[][] botonesTablero;
 	private JPanel panelTablero = new JPanel();
 	private JLabel labelCasillasDescubiertas;
@@ -76,9 +66,6 @@ public class BuscaMinas extends JFrame {
 		});
 	}
 
-=======
-	
->>>>>>> Stashed changes
 	/**
 	 * Create the frame.
 	 */
@@ -131,7 +118,7 @@ public class BuscaMinas extends JFrame {
 		int seleccion = JOptionPane.showOptionDialog(null, label, "Buscaminas", JOptionPane.DEFAULT_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, niveles, niveles[0]);
 
-		setSize(new Dimension(900, 900));
+		setSize(new Dimension(800, 800));
 		setResizable(false);
 		setLocationRelativeTo(null);
 
@@ -178,7 +165,7 @@ public class BuscaMinas extends JFrame {
 		Image imagenOriginal2 = imagen.getImage();
 		Image imagenRedimensionada2 = imagenOriginal2.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 		ImageIcon iconRedimensionado2 = new ImageIcon(imagenRedimensionada2);
-		
+
 		JLabel labelImagen = new JLabel(iconRedimensionado2);
 		labelImagen.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLabels1.add(labelImagen);
@@ -289,7 +276,7 @@ public class BuscaMinas extends JFrame {
 				String rutaImagen2 = "/com/proyectoFinal/grupo2/Juegos/Imagenes/banderaBuscaMinas.png";
 				ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen2));
 				Image imagenOriginal2 = imagen.getImage();
-				Image imagenRedimensionada2 = imagenOriginal2.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+				Image imagenRedimensionada2 = imagenOriginal2.getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH);
 				ImageIcon iconRedimensionado2 = new ImageIcon(imagenRedimensionada2);
 				btnButton.setIcon(iconRedimensionado2);
 				actualizarBanderasPuestas();
