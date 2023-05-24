@@ -17,7 +17,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.GridLayout;
 import java.awt.Image;
-
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 

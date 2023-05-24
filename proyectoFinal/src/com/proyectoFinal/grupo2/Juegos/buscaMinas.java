@@ -1,6 +1,11 @@
 package com.proyectoFinal.grupo2.Juegos;
 
+<<<<<<< Updated upstream
 import javax.swing.ImageIcon;
+=======
+import java.awt.Dimension;
+import java.awt.GridLayout;
+>>>>>>> Stashed changes
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,11 +18,15 @@ import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.proyectoFinal.grupo2.Clases.Casilla;
 import com.proyectoFinal.grupo2.Clases.TableroBuscaminas;
 import java.awt.BorderLayout;
+<<<<<<< Updated upstream
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Image;
+=======
+import java.awt.event.ActionListener;
+>>>>>>> Stashed changes
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -36,6 +45,7 @@ public class BuscaMinas extends JFrame {
 	private JPanel contentPane;
 	private int tamanoTauler;
 	private int cantidadMinas;
+<<<<<<< Updated upstream
 	private JButton[][] botonesTablero;
 	private JPanel panelTablero = new JPanel();
 	private JLabel labelCasillasDescubiertas;
@@ -66,6 +76,9 @@ public class BuscaMinas extends JFrame {
 		});
 	}
 
+=======
+	
+>>>>>>> Stashed changes
 	/**
 	 * Create the frame.
 	 */
