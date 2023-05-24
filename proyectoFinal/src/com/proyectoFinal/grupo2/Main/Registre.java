@@ -3,11 +3,16 @@ package com.proyectoFinal.grupo2.Main;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -16,13 +21,15 @@ import javax.swing.border.EmptyBorder;
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 
 public class Registre extends JFrame {
-
+	JFileChooser fileChooser = new JFileChooser();
 	private JPanel contentPane;
 	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_5;
+	private JTextField apellidosField;
+	private JTextField poblacioField;
 	private JTextField textField_3;
+	private JPasswordField contrasenya;
+	private JPasswordField contrasenya2;
+
 	/**
 	 * Launch the application.
 	 */
@@ -51,7 +58,7 @@ public class Registre extends JFrame {
 			 */
 			public Registre() {
 				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				setBounds(100, 100, 735, 769);
+				setBounds(100, 100, 735, 835);
 				contentPane = new JPanel();
 				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 				setContentPane(contentPane);
@@ -61,7 +68,7 @@ public class Registre extends JFrame {
 				
 		JPanel panel = new JPanel();
 				panel.setBackground(new Color(90, 98, 167));
-				panel.setBounds(126, 37, 477, 610);
+				panel.setBounds(126, 37, 477, 701);
 				contentPane.add(panel);
 				panel.setLayout(null);
 				
@@ -88,7 +95,23 @@ public class Registre extends JFrame {
 				lblContrasenya.setHorizontalAlignment(SwingConstants.LEFT);
 				lblContrasenya.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
 				
+				
+				
 				JButton btnNewButton = new JButton("Insereix");
+				btnNewButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+				        fileChooser.setCurrentDirectory(new File(""));
+
+				        int result = fileChooser.showOpenDialog(null);
+				        if (result == JFileChooser.APPROVE_OPTION) {
+				            File selectedFile = fileChooser.getSelectedFile();
+				            System.out.println("Archivo seleccionado: " + selectedFile.getName());
+				        } else if (result == JFileChooser.CANCEL_OPTION) {
+				            System.out.println("Selección de archivos cancelada");
+				        }
+				    }
+					
+				});
 				btnNewButton.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 				btnNewButton.setBounds(139, 212, 305, 31);
 				panel.add(btnNewButton);
@@ -99,17 +122,17 @@ public class Registre extends JFrame {
 				lblNom.setBounds(37, 56, 187, 31);
 				panel.add(lblNom);
 				
-				textField_1 = new JTextField();
-				textField_1.setToolTipText("");
-				textField_1.setColumns(10);
-				textField_1.setBounds(37, 154, 407, 31);
-				panel.add(textField_1);
+				apellidosField = new JTextField();
+				apellidosField.setToolTipText("");
+				apellidosField.setColumns(10);
+				apellidosField.setBounds(37, 154, 407, 31);
+				panel.add(apellidosField);
 				
-				textField_2 = new JTextField();
-				textField_2.setToolTipText("");
-				textField_2.setColumns(10);
-				textField_2.setBounds(37, 286, 407, 31);
-				panel.add(textField_2);
+				poblacioField = new JTextField();
+				poblacioField.setToolTipText("");
+				poblacioField.setColumns(10);
+				poblacioField.setBounds(37, 286, 407, 31);
+				panel.add(poblacioField);
 				
 				JLabel lblImatge = new JLabel("IMATGE");
 				lblImatge.setHorizontalAlignment(SwingConstants.LEFT);
@@ -129,11 +152,11 @@ public class Registre extends JFrame {
 				lblContrasenya_2.setBounds(37, 327, 136, 31);
 				panel.add(lblContrasenya_2);
 				
-				textField_5 = new JTextField();
-				textField_5.setToolTipText("");
-				textField_5.setColumns(10);
-				textField_5.setBounds(37, 357, 407, 31);
-				panel.add(textField_5);
+				contrasenya = new JPasswordField();
+				contrasenya.setToolTipText("");
+				contrasenya.setColumns(10);
+				contrasenya.setBounds(37, 357, 407, 31);
+				panel.add(contrasenya);
 				
 				JLabel lblContrasenya_2_1 = new JLabel("REPETEIX CONTRASENYA");
 				lblContrasenya_2_1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -141,12 +164,112 @@ public class Registre extends JFrame {
 				lblContrasenya_2_1.setBounds(37, 398, 242, 31);
 				panel.add(lblContrasenya_2_1);
 				
-				textField_3 = new JTextField();
-				textField_3.setToolTipText("");
-				textField_3.setColumns(10);
-				textField_3.setBounds(37, 439, 407, 31);
-				panel.add(textField_3);
+				contrasenya2 = new JPasswordField();
+				contrasenya2.setToolTipText("");
+contrasenya2.setColumns(10);
+				contrasenya2.setBounds(37, 439, 407, 31);
+				panel.add(contrasenya2);
+				
+				JLabel Errors = new JLabel("");
+				Errors.setForeground(Color.RED);
+				Errors.setHorizontalAlignment(SwingConstants.LEFT);
+				Errors.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
+				Errors.setBounds(37, 538, 407, 153);
+				panel.add(Errors);
 //				
 				setResizable(false);
+			
+			
+				btnRegistrarse.addActionListener(e -> {
+					String nombre = textField.getText();
+					String apellidos = apellidosField.getText();
+//					String imagen = textField_2.getText();
+					String poblacio = poblacioField.getText();
+					String contra =  String.valueOf(contrasenya.getPassword());
+					String contra2 =  String.valueOf(contrasenya2.getPassword());
+					String error="";
+					
+					
+					if(nombre.isEmpty()) {
+						textField.setBackground(new Color(255, 51, 51));
+					}
+					else {
+						textField.setBackground(null);
+					}
+					
+					if(apellidos.isEmpty()) {
+						apellidosField.setBackground(new Color(255, 51, 51));
+					}
+					else {
+						apellidosField.setBackground(null);
+					}
+					
+					if(poblacio.isEmpty()) {
+						poblacioField.setBackground(new Color(255, 51, 51));
+					}
+					else {
+						poblacioField.setBackground(null);
+					}
+					
+					if(contra.isEmpty()) {
+						contrasenya.setBackground(new Color(255, 51, 51));
+					}
+					else {
+						contrasenya.setBackground(null);
+					}
+					
+					// Validar campos vacíos
+					if (nombre.isEmpty() || apellidos.isEmpty() || poblacio.isEmpty() || contra.isEmpty()
+							|| contra2.isEmpty()) {
+						error="Todos los campos son obligatorios <br>";
+						System.out.println("Todos los campos son obligatorios");
+					}
+
+
+
+					 if (contra.length() < 8 || !contra.matches(".*[A-Z].*") || !contra.matches(".*\\d.*")) {
+							error+="La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un dígito <br>";
+					        System.out.println("La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un dígito");
+							contrasenya.setBackground(new Color(255, 51, 51));
+					    }
+					 else {
+							contrasenya.setBackground(null);
+					 }
+					 
+						// Validar contraseñas iguales
+						if (!contra.equals(contra2)) {
+							error+="Las contraseñas no coinciden <br>";
+							System.out.println("Las contraseñas no coinciden");
+							contrasenya2.setBackground(new Color(255, 51, 51));
+						}
+						else {
+							contrasenya2.setBackground(null);
+						}
+						
+						if (fileChooser.getSelectedFile() == null) {
+					        error += "No se ha seleccionado un archivo <br>";
+					        System.out.println("No se ha seleccionado un archivo");
+					        btnNewButton.setBackground(new Color(255, 51, 51)); 
+					    }
+						else{
+					        btnNewButton.setBackground(null); 
+
+						}
+					Errors.setText("<html>"+error+"</html>");
+					 
+						if(error=="") {
+							//Lanzar funcion para escribir todo en la base de datos
+							
+//							Usuario usuarioRegistrado = new Usuario();
+						}
+
+				});
+			
+			
+			
+			
+			
+			
+			
 			}
 		}

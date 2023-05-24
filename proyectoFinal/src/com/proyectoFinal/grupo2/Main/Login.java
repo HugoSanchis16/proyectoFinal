@@ -3,13 +3,12 @@ package com.proyectoFinal.grupo2.Main;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -22,7 +21,9 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JPasswordField contrasenya;
 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -79,11 +80,11 @@ public class Login extends JFrame {
 		btnRegistrarse.setBounds(161, 404, 407, 38);
 		contentPane.add(btnRegistrarse);
 		
-		textField_1 = new JTextField();
-		textField_1.setToolTipText("");
-		textField_1.setColumns(10);
-		textField_1.setBounds(161, 278, 407, 38);
-		contentPane.add(textField_1);
+		contrasenya = new JPasswordField();
+		contrasenya.setToolTipText("");
+		contrasenya.setColumns(10);
+		contrasenya.setBounds(161, 278, 407, 38);
+		contentPane.add(contrasenya);
 		
 		JLabel lblContrasenya = new JLabel("CONTRASENYA");
 		lblContrasenya.setHorizontalAlignment(SwingConstants.LEFT);
