@@ -14,24 +14,31 @@ public class BDUtils {
 	private static String usuariBD = BD.getUsuario();
 	private static String contrasenyaBD = BD.getContrasena();
 
-	public static boolean comprobarLogin(Usuario usuario) {
+	public static Usuario comprobarLogin(String email, String contrasena) {
+		/**
+		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash de la contraseña
+		 */
+		
+		// Variables
+		boolean usuarioEncontrado = false;
+		
+		
 		try {
 			elegirClaseBD();
 
 			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
 
-			// Establir la connexió
-
-			// Enviar una sentència SQL per recuperar els clients
 			Statement s = c.createStatement();
 			ResultSet r = s.executeQuery(
-					"SELECT nombre,contrasena FROM `usuarios` WHERE nombre='" + usuario.getNombre() + "'");
+					"SELECT * FROM `usuarios` WHERE correo='" + email + "'");
 
 			while (r.next()) {
-				if ((r.getString("nom") == usuario.getNombre())
-						&& (r.getString("contrasena") == usuario.getContrasena())) {
+				if ((r.getString("correo").equals(email))
+						&& (r.getString("contrasena").equals(contrasena))) {
+					Usuario usuario = new Usuario(r.getInt("id"), r.getString("nombre"), r.getString("apellidos"), r.getString("imagen"), r.getString("poblacion"), r.getString("correo"), r.getString("contrasena"));
+					
 					c.close();
-					return true;
+					return usuario;
 				}
 			}
 
@@ -50,10 +57,15 @@ public class BDUtils {
 			e.printStackTrace();
 		}
 
-		return false;
+		return null;
 	}
-
+	// Crealo así
+//		Usuario usuariotemp = new Usuario("", "", "", "", "", "");
+//		Usuario usuario = BDUtils.registrarUsuario(usuariotemp);
 	public static void registrarUsuario(Usuario usuario) {
+		/**
+		 * Crear constructor sin id
+		 */
 		try {
 			elegirClaseBD();
 
@@ -63,7 +75,7 @@ public class BDUtils {
 
 			// Enviar una sentència SQL per recuperar els clients
 			Statement s = c.createStatement();
-			ResultSet r = s.executeQuery(
+			int r = s.executeUpdate(
 					"INSERT INTO `usuarios` (`id`, `nombre`, `apellidos`, `imagen`, `poblacion`, `correo`, `contrasena`) "
 							+ "VALUES (NULL, '" + usuario.getNombre() + "', '" + usuario.getApellidos() + "', '"
 							+ usuario.getImagen() + "', '" + usuario.getPoblacion() + "', '"

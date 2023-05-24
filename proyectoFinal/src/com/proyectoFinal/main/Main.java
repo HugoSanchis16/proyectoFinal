@@ -1,17 +1,24 @@
 package com.proyectoFinal.main;
 
-import com.proyectoFinal.clases.BD;
 import com.proyectoFinal.clases.Usuario;
 import com.proyectoFinal.utils.BDUtils;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Usuario usuario = new Usuario(1, "", "", "", "", "", "");
+		String email = "admin@gmail.com";
+		String contrasena = "Admin1";
 
-		BDUtils pr = new BDUtils();
-		System.out.println(BD.getHost());
-		BDUtils.comprobarLogin(usuario);
+		Usuario usuario = null;
+		usuario = BDUtils.comprobarLogin(email, contrasena);
+		
+		
+		System.out.println("Comprobación login retorna un objeto Usuario si el login es correcto\n" + usuario.toString());
+		
+		Usuario usuarioACrear = new Usuario("Cde", "Cde", "Cde", "Cde", "Cde", "Cde");
+		BDUtils.registrarUsuario(usuarioACrear);
+		
+		System.out.println("Total Usuarios Creados: " + BDUtils.comprobarNumUsuariosCreados());
 
 	}
 

@@ -19,6 +19,16 @@ public class Usuario {
 		this.correoElectronico = correoElectronico;
 		this.contrasena = contrasena;
 	}
+	public Usuario(String nombre, String apellidos, String imagen, String poblacion, String correoElectronico,
+			String contrasena) {
+		this.id = id;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.imagen = imagen;
+		this.poblacion = poblacion;
+		this.correoElectronico = correoElectronico;
+		this.contrasena = contrasena;
+	}
 
 	public int getId() {
 		return id;
@@ -74,6 +84,13 @@ public class Usuario {
 
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", imagen=" + imagen
+				+ ", poblacion=" + poblacion + ", correoElectronico=" + correoElectronico + ", contrasena=" + contrasena
+				+ "]";
 	}
 
 }
