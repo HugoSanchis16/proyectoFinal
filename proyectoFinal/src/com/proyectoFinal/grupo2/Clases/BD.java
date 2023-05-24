@@ -1,4 +1,4 @@
-package com.proyectoFinal.clases;
+package com.proyectoFinal.grupo2.Clases;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;

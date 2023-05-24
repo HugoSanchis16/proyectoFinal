@@ -1,13 +1,12 @@
-package com.proyectoFinal.utils;
+package com.proyectoFinal.grupo2.Clases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import com.proyectoFinal.clases.BD;
-import com.proyectoFinal.clases.Usuario;
-import com.proyectoFinal.clases.BD;
+
+import com.proyectoFinal.grupo2.Clases.Usuario;
 
 public class BDUtils {
 	private static String urlBaseDades = "jdbc:mysql://" + BD.getHost() + ":3306/1daw02_pro";
