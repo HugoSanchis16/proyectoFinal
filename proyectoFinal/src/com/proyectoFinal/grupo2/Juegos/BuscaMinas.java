@@ -22,6 +22,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import javax.swing.Timer;
 
 public class BuscaMinas extends JFrame {
@@ -31,18 +33,19 @@ public class BuscaMinas extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	boolean salir = false;
-	private String[] niveles = { "Fácil", "Medio", "Difícil" };
+	private String[] niveles = { "Fácil", "Medio", "Difícil", "Cargar Partida" };
 	private String[] opcionesTrasAcabar = { "Volver a Jugar", "Salir" };
 	private JPanel contentPane;
 	private int tamanoTauler;
 	private int cantidadMinas;
+	private int segundosTrascurridos;
 	private JButton[][] botonesTablero;
 	private JPanel panelTablero = new JPanel();
-	private JLabel labelCasillasDescubiertas;
-	private JLabel labelCasillasCubiertas;
-	private JLabel labelBanderasPuestas;
+	private JLabel labelCasillasDescubiertas = new JLabel();
+	private JLabel labelCasillasCubiertas = new JLabel();
+	private JLabel labelBanderasPuestas = new JLabel();
+	private JLabel labelTimer = new JLabel();
 	boolean partidaVigente;
-	int segundos;
 	Timer timer;
 	TableroBuscaminas tableroBuscaminas;
 
@@ -97,7 +100,11 @@ public class BuscaMinas extends JFrame {
 		botonGuardar.setHorizontalAlignment(SwingConstants.CENTER);
 		botonGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				timer.stop();
+				tableroBuscaminas.setSegundosPartida(segundosTrascurridos);
+				String tableroSerializado = TableroBuscaminas.serializeTablero(tableroBuscaminas);
+				System.out.println(tableroSerializado);
+				
 			}
 		});
 		panel.add(botonGuardar);
@@ -118,34 +125,50 @@ public class BuscaMinas extends JFrame {
 		int seleccion = JOptionPane.showOptionDialog(null, label, "Buscaminas", JOptionPane.DEFAULT_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, niveles, niveles[0]);
 
-		setSize(new Dimension(800, 800));
+		setSize(new Dimension(850, 850));
 		setResizable(false);
 		setLocationRelativeTo(null);
 
+		iniciarTiempo(tableroBuscaminas);
+		
 		switch (seleccion) {
 		case 0:
 			tamanoTauler = 10;
 			cantidadMinas = 10;
 			this.setTitle(getTitle() + "Facil");
+			crearBotones(tamanoTauler);
+			crearTablero();
 			break;
 		case 1:
 			tamanoTauler = 15;
 			cantidadMinas = 15;
 			this.setTitle(getTitle() + "Medio");
+			crearBotones(tamanoTauler);
+			crearTablero();
 			break;
 		case 2:
 			tamanoTauler = 20;
 			cantidadMinas = 20;
 			this.setTitle(getTitle() + "Dificil");
+			crearBotones(tamanoTauler);
+			crearTablero();
+			break;
+		case 3:
+			tamanoTauler = 20;
+			cantidadMinas = 20;
+			this.setTitle(getTitle() + "Dificil");
+			crearBotones(tamanoTauler);
+			crearTablero();
+			cargarPartida();
 			break;
 		default:
 			tamanoTauler = 5;
 			cantidadMinas = 5;
 			this.setTitle(getTitle() + "Facil");
+			crearBotones(tamanoTauler);
+			crearTablero();
 			break;
 		}
-		crearBotones(tamanoTauler);
-		crearTablero();
 
 		JPanel panelInformacion = new JPanel();
 		contentPane.add(panelInformacion, BorderLayout.NORTH);
@@ -154,7 +177,7 @@ public class BuscaMinas extends JFrame {
 		JPanel panelLabels1 = new JPanel();
 		panelLabels1.setLayout(new GridLayout(1, 3));
 
-		String estiloCSSMinas = "<html><body><p style='font-size: 18px;'>Minas: " + tableroBuscaminas.getNumMinas()
+		String estiloCSSMinas = "<html><body><p style='font-size: 16px;'>Minas: " + tableroBuscaminas.getNumMinas()
 				+ "</p></body></html>";
 		JLabel labelMinas = new JLabel(estiloCSSMinas);
 		labelMinas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -170,8 +193,9 @@ public class BuscaMinas extends JFrame {
 		labelImagen.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLabels1.add(labelImagen);
 
-		JLabel labelTimer = new JLabel(
-				"<html><body><p style='font-size: 18px;'>Tiempo: " + segundos + " segundos</p></body></html>");
+		String estiloCSSTimer = "<html><body><p style='font-size: 16px;'>Tiempo: " + segundosTrascurridos
+				+ " segundos</p></body></html>";
+		labelTimer.setText(estiloCSSTimer);
 		labelTimer.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLabels1.add(labelTimer);
 
@@ -180,44 +204,33 @@ public class BuscaMinas extends JFrame {
 		JPanel panelLabels2 = new JPanel();
 		panelLabels2.setLayout(new GridLayout(1, 3));
 
-		String estiloCSSCasillasDescubiertas = "<html><body><p style='font-size: 18px;'>Casillas descubiertas: "
-				+ tableroBuscaminas.getNumCasillasAbiertas() + "</p></body></html>";
-		labelCasillasDescubiertas = new JLabel(estiloCSSCasillasDescubiertas);
+		actualizarCasillasAbiertas();
 		labelCasillasDescubiertas.setHorizontalAlignment(SwingConstants.CENTER);
 
 		panelLabels2.add(labelCasillasDescubiertas);
 
-		String estiloCSSCasillasCubiertas = "<html><body><p style='font-size: 18px;'>Casillas cubiertas: "
-				+ (tableroBuscaminas.getNumFilas() * tableroBuscaminas.getNumFilas()) + "</p></body></html>";
-		labelCasillasCubiertas = new JLabel(estiloCSSCasillasCubiertas);
+		actualizarCasillasCerradas();
 		labelCasillasCubiertas.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLabels2.add(labelCasillasCubiertas);
 
-		String estiloCSSCasillasBanderas = "<html><body><p style='font-size: 18px;'>Banderas: "
-				+ tableroBuscaminas.getNumBanderas() + "</p></body></html>";
-		labelBanderasPuestas = new JLabel(estiloCSSCasillasBanderas);
+		actualizarBanderasPuestas();
 		labelBanderasPuestas.setHorizontalAlignment(SwingConstants.CENTER);
 		panelLabels2.add(labelBanderasPuestas);
 		panelInformacion.add(panelLabels2);
-
-		timer = new Timer(1000, new ActionListener() {
-			int segundos = 0;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				segundos++;
-				String estiloCSSTimer = "<html><body><p style='font-size: 18px;'>Tiempo: " + segundos
-						+ " segundos</p></body></html>";
-				labelTimer.setText(estiloCSSTimer);
-			}
-		});
-		timer.start();
 
 	}
 
 	private void crearTablero() {
 		tableroBuscaminas = new TableroBuscaminas(tamanoTauler, tamanoTauler, cantidadMinas);
 		tableroBuscaminas.imprimirTablero();
+	}
+
+	public void eliminarBotones() {
+		for (int i = 0; i < botonesTablero.length; i++) {
+			for (int j = 0; j < botonesTablero[i].length; j++) {
+				panelTablero.remove(botonesTablero[i][j]);
+			}
+		}
 	}
 
 	public void crearBotones(int tamanoTauler) {
@@ -258,6 +271,7 @@ public class BuscaMinas extends JFrame {
 				}
 			}
 		}
+		mostrarBanderas();
 	}
 
 	private void clickDerechoBoton(MouseEvent e) {
@@ -319,6 +333,19 @@ public class BuscaMinas extends JFrame {
 		labelBanderasPuestas.setText(estiloCSSBanderas);
 	}
 
+	private void iniciarTiempo(TableroBuscaminas tableroBuscaminas) {
+		timer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				segundosTrascurridos++;
+				String estiloCSSTimer = "<html><body><p style='font-size: 16px;'>Tiempo: " + segundosTrascurridos
+						+ " segundos</p></body></html>";
+				labelTimer.setText(estiloCSSTimer);
+			}
+		});
+		timer.start();
+	}
+
 	private void actualizarCasillasAbiertas() {
 		String estiloCSSCasillasDescubiertas = "<html><body><p style='font-size: 18px;'>Casillas descubiertas: "
 				+ tableroBuscaminas.getNumCasillasAbiertas() + "</p></body></html>";
@@ -326,11 +353,14 @@ public class BuscaMinas extends JFrame {
 	}
 
 	private void actualizarCasillasCerradas() {
-		String estiloCSSCasillasCubiertas = "<html><body><p style='font-size: 18px;'>Casillas cubiertas: "
-				+ ((tableroBuscaminas.getNumFilas() * tableroBuscaminas.getNumFilas())
-						- tableroBuscaminas.getNumCasillasAbiertas())
-				+ "</p></body></html>";
-		labelCasillasCubiertas.setText(estiloCSSCasillasCubiertas);
+
+		ArrayList<Casilla> casillasCerradas = tableroBuscaminas.getCasillasCerradas();
+		int casillasCerradasInt = casillasCerradas.size();
+		System.out.println(casillasCerradasInt);
+
+		String estiloCSSCasillasCubiertas2 = "<html><body><p style='font-size: 18px;'>Casillas cubiertas: "
+				+ casillasCerradasInt + "</p></body></html>";
+		labelCasillasCubiertas.setText(estiloCSSCasillasCubiertas2);
 	}
 
 	private void desactivarBotones() {
@@ -380,6 +410,28 @@ public class BuscaMinas extends JFrame {
 		}
 	}
 
+	private void cargarPartida() {
+
+		String tableroSerializado = JOptionPane.showInputDialog("Introduce el string de la partida guardada:");
+
+		TableroBuscaminas tablero = TableroBuscaminas.deserializeTablero(tableroSerializado);
+
+		// Actualiza el tablero y otros elementos necesarios con los valores cargados
+		tableroBuscaminas = tablero;
+		tamanoTauler = tablero.getNumFilas();
+		cantidadMinas = tablero.getNumMinas();
+		segundosTrascurridos = tablero.getSegundosPartida();
+		
+
+		eliminarBotones();
+		crearBotones(tamanoTauler);
+		actualizarBotones();
+		actualizarCasillasCerradas();
+		actualizarBanderasPuestas();
+		actualizarCasillasAbiertas();
+
+	}
+
 	private void mostrarMinas() {
 		String rutaImagen = "/com/proyectoFinal/grupo2/Juegos/Imagenes/minaBuscaMinas.png";
 		ImageIcon nuevoIcono = new ImageIcon(getClass().getResource(rutaImagen));
@@ -395,4 +447,21 @@ public class BuscaMinas extends JFrame {
 		}
 
 	}
+	
+	private void mostrarBanderas() {
+		String rutaImagen = "/com/proyectoFinal/grupo2/Juegos/Imagenes/banderaBuscaMinas.png";
+		ImageIcon nuevoIcono = new ImageIcon(getClass().getResource(rutaImagen));
+		Image imagenOriginal = nuevoIcono.getImage();
+		Image imagenRedimensionada = imagenOriginal.getScaledInstance(15, 15, java.awt.Image.SCALE_SMOOTH);
+		ImageIcon iconRedimensionado = new ImageIcon(imagenRedimensionada);
+		for (int i = 0; i < botonesTablero.length; i++) {
+			for (int j = 0; j < botonesTablero[i].length; j++) {
+				if (tableroBuscaminas.getCasilla(i, j).isBandera()) {
+					botonesTablero[i][j].setIcon(iconRedimensionado);
+				}
+			}
+		}
+
+	}
+
 }

@@ -1,9 +1,21 @@
 package com.proyectoFinal.grupo2.Clases;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Random;
 
-public class TableroBuscaminas {
+public class TableroBuscaminas implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	Casilla[][] casillas;
 
 	int numFilas;
@@ -11,6 +23,7 @@ public class TableroBuscaminas {
 	int numMinas;
 	int numBanderas;
 	int numCasillasAbiertas;
+	int segundosPartida;
 	boolean casillaAbierta = false;
 	boolean juegoTerminado = false;
 
@@ -106,8 +119,6 @@ public class TableroBuscaminas {
 		return listaCasillasAlrededor;
 	}
 
-
-
 	public boolean hayCasillasAdyacentesSinMina(int posFila, int posColumna) {
 		ArrayList<Casilla> casillasAdyacentes = casillasAlrededor(posFila, posColumna);
 		for (Casilla casilla : casillasAdyacentes) {
@@ -117,7 +128,6 @@ public class TableroBuscaminas {
 		}
 		return false;
 	}
-	
 
 	public void marcarCasillaAbierta(int posFila, int posColumna) {
 		if (!this.casillas[posFila][posColumna].isAbierta()) {
@@ -170,6 +180,19 @@ public class TableroBuscaminas {
 			return true;
 		}
 		return false;
+	}
+
+	public ArrayList<Casilla> getCasillasCerradas() {
+		ArrayList<Casilla> casillasCerradas = new ArrayList<>();
+		for (int i = 0; i < casillas.length; i++) {
+			for (int j = 0; j < casillas[i].length; j++) {
+				Casilla casilla = casillas[i][j];
+				if (!casilla.isAbierta()) {
+					casillasCerradas.add(casilla);
+				}
+			}
+		}
+		return casillasCerradas;
 	}
 
 	public int getNumBanderas() {
@@ -243,6 +266,15 @@ public class TableroBuscaminas {
 	public void setNumMinas(int numMinas) {
 		this.numMinas = numMinas;
 	}
+	
+
+	public int getSegundosPartida() {
+		return segundosPartida;
+	}
+
+	public void setSegundosPartida(int segundosPartida) {
+		this.segundosPartida = segundosPartida;
+	}
 
 	public ArrayList<String> getMinasEnCasillas() {
 		return minasEnCasillas;
@@ -252,7 +284,32 @@ public class TableroBuscaminas {
 		this.minasEnCasillas = minasEnCasillas;
 	}
 
-	public static void main(String[] args) {
-		TableroBuscaminas tablero = new TableroBuscaminas(5, 5, 5);
+	public static String serializeTablero(TableroBuscaminas tablero) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(tablero);
+			oos.close();
+			byte[] bytes = baos.toByteArray();
+			return java.util.Base64.getEncoder().encodeToString(bytes);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static TableroBuscaminas deserializeTablero(String tableroSerializado) {
+		try {
+			byte[] bytes = Base64.getDecoder().decode(tableroSerializado);
+			ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			TableroBuscaminas tablero = (TableroBuscaminas) ois.readObject();
+			ois.close();
+			bis.close();
+			return tablero;
+		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

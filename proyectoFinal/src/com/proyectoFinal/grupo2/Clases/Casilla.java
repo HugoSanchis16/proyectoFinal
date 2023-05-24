@@ -1,6 +1,8 @@
 package com.proyectoFinal.grupo2.Clases;
 
-public class Casilla {
+import java.io.Serializable;
+
+public class Casilla implements Serializable {
 	private int posFila;
 	private int posColumna;
 	private boolean mina;
