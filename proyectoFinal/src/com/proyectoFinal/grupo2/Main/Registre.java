@@ -35,23 +35,23 @@ public class Registre extends JFrame {
 	 */
 	public static void main(String[] args) {
 		// Configure the FlatLaf theme
-				try {
-					UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
+		try {
+			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							Registre frame = new Registre();
-							frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Registre frame = new Registre();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+		});
+	}
 
 			/**
 			 * Create the frame.
