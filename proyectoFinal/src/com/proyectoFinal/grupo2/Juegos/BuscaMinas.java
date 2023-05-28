@@ -33,7 +33,7 @@ public class BuscaMinas extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	boolean salir = false;
-	private String[] niveles = { "Fácil", "Medio", "Difícil", "Cargar Partida" };
+	final private static String[] niveles = { "Fácil", "Medio", "Difícil", "Cargar Partida" };
 	private String[] opcionesTrasAcabar = { "Volver a Jugar", "Salir" };
 	private JPanel contentPane;
 	private int tamanoTauler;
@@ -60,8 +60,9 @@ public class BuscaMinas extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+
 					BuscaMinas frame = new BuscaMinas();
-					frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -73,150 +74,154 @@ public class BuscaMinas extends JFrame {
 	 * Create the frame.
 	 */
 	public BuscaMinas() {
-		super("Busca Minas - ");
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.SOUTH);
-
-		JButton botonReset = new JButton("Nueva Partida");
-		botonReset.setFocusable(false);
-		botonReset.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				BuscaMinas buscaMinas = new BuscaMinas();
-				buscaMinas.setVisible(true);
-			}
-		});
-		botonReset.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(botonReset);
-
-		JButton botonGuardar = new JButton("Guardar Partida");
-		botonGuardar.setFocusable(false);
-		botonGuardar.setHorizontalAlignment(SwingConstants.CENTER);
-		botonGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				timer.stop();
-				tableroBuscaminas.setSegundosPartida(segundosTrascurridos);
-				String tableroSerializado = TableroBuscaminas.serializeTablero(tableroBuscaminas);
-				System.out.println(tableroSerializado);
-				
-			}
-		});
-		panel.add(botonGuardar);
-
-		JButton botonSalir = new JButton("Salir");
-		botonSalir.setFocusable(false);
-		botonSalir.setHorizontalAlignment(SwingConstants.CENTER);
-		botonSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		panel.add(botonSalir);
-
 		String estiloCSS = "<html><body><p style='font-size: 16px;'>Selecciona un nivel</p></body></html>";
 		JLabel label = new JLabel(estiloCSS);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		int seleccion = JOptionPane.showOptionDialog(null, label, "Buscaminas", JOptionPane.DEFAULT_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, niveles, niveles[0]);
+		if (seleccion != -1) {
+			setVisible(true);
+			contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setSize(new Dimension(850, 850));
-		setResizable(false);
-		setLocationRelativeTo(null);
+			setContentPane(contentPane);
+			contentPane.setLayout(new BorderLayout(0, 0));
 
-		iniciarTiempo(tableroBuscaminas);
-		
-		switch (seleccion) {
-		case 0:
-			tamanoTauler = 10;
-			cantidadMinas = 10;
-			this.setTitle(getTitle() + "Facil");
-			crearBotones(tamanoTauler);
-			crearTablero();
-			break;
-		case 1:
-			tamanoTauler = 15;
-			cantidadMinas = 15;
-			this.setTitle(getTitle() + "Medio");
-			crearBotones(tamanoTauler);
-			crearTablero();
-			break;
-		case 2:
-			tamanoTauler = 20;
-			cantidadMinas = 20;
-			this.setTitle(getTitle() + "Dificil");
-			crearBotones(tamanoTauler);
-			crearTablero();
-			break;
-		case 3:
-			tamanoTauler = 20;
-			cantidadMinas = 20;
-			this.setTitle(getTitle() + "Dificil");
-			crearBotones(tamanoTauler);
-			crearTablero();
-			cargarPartida();
-			break;
-		default:
-			tamanoTauler = 5;
-			cantidadMinas = 5;
-			this.setTitle(getTitle() + "Facil");
-			crearBotones(tamanoTauler);
-			crearTablero();
-			break;
+			JPanel panel = new JPanel();
+			contentPane.add(panel, BorderLayout.SOUTH);
+
+			JButton botonReset = new JButton("Nueva Partida");
+			botonReset.setFocusable(false);
+			botonReset.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+					int seleccion = JOptionPane.showOptionDialog(null,
+							"<html><body><p style='font-size: 16px;'>Selecciona un nivel</p></body></html>",
+							"Buscaminas", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, niveles,
+							niveles[0]);
+					if (seleccion != -1) {
+						BuscaMinas frame = new BuscaMinas();
+						frame.setVisible(true);
+					}
+				}
+			});
+			botonReset.setHorizontalAlignment(SwingConstants.CENTER);
+			panel.add(botonReset);
+
+			JButton botonGuardar = new JButton("Guardar Partida");
+			botonGuardar.setFocusable(false);
+			botonGuardar.setHorizontalAlignment(SwingConstants.CENTER);
+			botonGuardar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					timer.stop();
+					tableroBuscaminas.setSegundosPartida(segundosTrascurridos);
+					String tableroSerializado = TableroBuscaminas.serializeTablero(tableroBuscaminas);
+					System.out.println(tableroSerializado);
+
+				}
+			});
+			panel.add(botonGuardar);
+
+			JButton botonSalir = new JButton("Salir");
+			botonSalir.setFocusable(false);
+			botonSalir.setHorizontalAlignment(SwingConstants.CENTER);
+			botonSalir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dispose();
+				}
+			});
+			panel.add(botonSalir);
+
+			setSize(new Dimension(850, 850));
+			setResizable(false);
+			setLocationRelativeTo(null);
+
+			iniciarTiempo(tableroBuscaminas);
+
+			switch (seleccion) {
+			case 0:
+				tamanoTauler = 10;
+				cantidadMinas = 10;
+				this.setTitle("BuscaMinas - Facil");
+				crearBotones(tamanoTauler);
+				crearTablero();
+				break;
+			case 1:
+				tamanoTauler = 15;
+				cantidadMinas = 15;
+				this.setTitle("BuscaMinas - Medio");
+				crearBotones(tamanoTauler);
+				crearTablero();
+				break;
+			case 2:
+				tamanoTauler = 20;
+				cantidadMinas = 30;
+				this.setTitle("BuscaMinas - Dificil");
+				crearBotones(tamanoTauler);
+				crearTablero();
+				break;
+			case 3:
+				tamanoTauler = 1;
+				cantidadMinas = 1;
+				crearBotones(tamanoTauler);
+				crearTablero();
+				cargarPartida();
+				break;
+			}
+			JPanel panelInformacion = new JPanel();
+			contentPane.add(panelInformacion, BorderLayout.NORTH);
+			panelInformacion.setLayout(new GridLayout(2, 1));
+
+			JPanel panelLabels1 = new JPanel();
+			panelLabels1.setLayout(new GridLayout(1, 3));
+
+			String estiloCSSMinas = "<html><body><p style='font-size: 16px;'>Minas: " + tableroBuscaminas.getNumMinas()
+					+ "</p></body></html>";
+			JLabel labelMinas = new JLabel(estiloCSSMinas);
+			labelMinas.setHorizontalAlignment(SwingConstants.CENTER);
+			panelLabels1.add(labelMinas);
+
+			String rutaImagen2 = "/com/proyectoFinal/grupo2/Juegos/Imagenes/minaBuscaMinas.png";
+			ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen2));
+			Image imagenOriginal2 = imagen.getImage();
+			Image imagenRedimensionada2 = imagenOriginal2.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+			ImageIcon iconRedimensionado2 = new ImageIcon(imagenRedimensionada2);
+
+			JLabel labelImagen = new JLabel(iconRedimensionado2);
+			labelImagen.setHorizontalAlignment(SwingConstants.CENTER);
+			panelLabels1.add(labelImagen);
+
+			String estiloCSSTimer = "<html><body><p style='font-size: 16px;'>Tiempo: " + segundosTrascurridos
+					+ " segundos</p></body></html>";
+			labelTimer.setText(estiloCSSTimer);
+			labelTimer.setHorizontalAlignment(SwingConstants.CENTER);
+			panelLabels1.add(labelTimer);
+
+			panelInformacion.add(panelLabels1);
+
+			JPanel panelLabels2 = new JPanel();
+			panelLabels2.setLayout(new GridLayout(1, 3));
+
+			actualizarCasillasAbiertas();
+			labelCasillasDescubiertas.setHorizontalAlignment(SwingConstants.CENTER);
+
+			panelLabels2.add(labelCasillasDescubiertas);
+
+			actualizarCasillasCerradas();
+			labelCasillasCubiertas.setHorizontalAlignment(SwingConstants.CENTER);
+			panelLabels2.add(labelCasillasCubiertas);
+
+			actualizarBanderasPuestas();
+			labelBanderasPuestas.setHorizontalAlignment(SwingConstants.CENTER);
+			panelLabels2.add(labelBanderasPuestas);
+			panelInformacion.add(panelLabels2);
+
+		} else {
+			System.out.println("cerrar");
+			setVisible(false);
+			dispose();
+
 		}
-
-		JPanel panelInformacion = new JPanel();
-		contentPane.add(panelInformacion, BorderLayout.NORTH);
-		panelInformacion.setLayout(new GridLayout(2, 1));
-
-		JPanel panelLabels1 = new JPanel();
-		panelLabels1.setLayout(new GridLayout(1, 3));
-
-		String estiloCSSMinas = "<html><body><p style='font-size: 16px;'>Minas: " + tableroBuscaminas.getNumMinas()
-				+ "</p></body></html>";
-		JLabel labelMinas = new JLabel(estiloCSSMinas);
-		labelMinas.setHorizontalAlignment(SwingConstants.CENTER);
-		panelLabels1.add(labelMinas);
-
-		String rutaImagen2 = "/com/proyectoFinal/grupo2/Juegos/Imagenes/minaBuscaMinas.png";
-		ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen2));
-		Image imagenOriginal2 = imagen.getImage();
-		Image imagenRedimensionada2 = imagenOriginal2.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon iconRedimensionado2 = new ImageIcon(imagenRedimensionada2);
-
-		JLabel labelImagen = new JLabel(iconRedimensionado2);
-		labelImagen.setHorizontalAlignment(SwingConstants.CENTER);
-		panelLabels1.add(labelImagen);
-
-		String estiloCSSTimer = "<html><body><p style='font-size: 16px;'>Tiempo: " + segundosTrascurridos
-				+ " segundos</p></body></html>";
-		labelTimer.setText(estiloCSSTimer);
-		labelTimer.setHorizontalAlignment(SwingConstants.CENTER);
-		panelLabels1.add(labelTimer);
-
-		panelInformacion.add(panelLabels1);
-
-		JPanel panelLabels2 = new JPanel();
-		panelLabels2.setLayout(new GridLayout(1, 3));
-
-		actualizarCasillasAbiertas();
-		labelCasillasDescubiertas.setHorizontalAlignment(SwingConstants.CENTER);
-
-		panelLabels2.add(labelCasillasDescubiertas);
-
-		actualizarCasillasCerradas();
-		labelCasillasCubiertas.setHorizontalAlignment(SwingConstants.CENTER);
-		panelLabels2.add(labelCasillasCubiertas);
-
-		actualizarBanderasPuestas();
-		labelBanderasPuestas.setHorizontalAlignment(SwingConstants.CENTER);
-		panelLabels2.add(labelBanderasPuestas);
-		panelInformacion.add(panelLabels2);
 
 	}
 
@@ -412,23 +417,26 @@ public class BuscaMinas extends JFrame {
 
 	private void cargarPartida() {
 
-		String tableroSerializado = JOptionPane.showInputDialog("Introduce el string de la partida guardada:");
+		try {
+			String tableroSerializado = JOptionPane.showInputDialog("Introduce el string de la partida guardada:");
+			TableroBuscaminas tablero = TableroBuscaminas.deserializeTablero(tableroSerializado);
 
-		TableroBuscaminas tablero = TableroBuscaminas.deserializeTablero(tableroSerializado);
+			// Actualiza el tablero y otros elementos necesarios con los valores cargados
+			tableroBuscaminas = tablero;
+			tamanoTauler = tablero.getNumFilas();
+			cantidadMinas = tablero.getNumMinas();
+			segundosTrascurridos = tablero.getSegundosPartida();
 
-		// Actualiza el tablero y otros elementos necesarios con los valores cargados
-		tableroBuscaminas = tablero;
-		tamanoTauler = tablero.getNumFilas();
-		cantidadMinas = tablero.getNumMinas();
-		segundosTrascurridos = tablero.getSegundosPartida();
-		
+			eliminarBotones();
+			crearBotones(tamanoTauler);
+			actualizarBotones();
+			actualizarCasillasCerradas();
+			actualizarBanderasPuestas();
+			actualizarCasillasAbiertas();
 
-		eliminarBotones();
-		crearBotones(tamanoTauler);
-		actualizarBotones();
-		actualizarCasillasCerradas();
-		actualizarBanderasPuestas();
-		actualizarCasillasAbiertas();
+		} catch (Exception e) {
+			dispose();
+		}
 
 	}
 
@@ -447,7 +455,7 @@ public class BuscaMinas extends JFrame {
 		}
 
 	}
-	
+
 	private void mostrarBanderas() {
 		String rutaImagen = "/com/proyectoFinal/grupo2/Juegos/Imagenes/banderaBuscaMinas.png";
 		ImageIcon nuevoIcono = new ImageIcon(getClass().getResource(rutaImagen));

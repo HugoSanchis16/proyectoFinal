@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.SwingConstants;
@@ -36,18 +38,19 @@ public class menuPrincipal extends JFrame {
 	private JPanel contentPane;
 	private String nomUsuari;
 	private BuscaMinas ventanaBuscaMinas;
+	private JocDeLaVida ventanaJuegoDeLaVida;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
+
 		try {
 			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -120,7 +123,6 @@ public class menuPrincipal extends JFrame {
 				if (ventanaBuscaMinas == null || !ventanaBuscaMinas.isVisible()) {
 					ventanaBuscaMinas = new BuscaMinas();
 				}
-				ventanaBuscaMinas.setVisible(true);
 			}
 
 		});
@@ -129,6 +131,16 @@ public class menuPrincipal extends JFrame {
 
 		JButton botonJuegoDeLaVida = new JButton("");
 		botonJuegoDeLaVida.setOpaque(false);
+		botonJuegoDeLaVida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (ventanaJuegoDeLaVida == null || !ventanaJuegoDeLaVida.isVisible()) {
+					ventanaJuegoDeLaVida = new JocDeLaVida();
+					ventanaJuegoDeLaVida.mostrarMenutamaño();
+
+				}
+			}
+
+		});
 		botonJuegoDeLaVida.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/juegoDeLaVida.jpg")));
 		panelJuegos.add(botonJuegoDeLaVida);
 
