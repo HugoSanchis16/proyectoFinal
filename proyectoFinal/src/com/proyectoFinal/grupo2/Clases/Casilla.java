@@ -2,7 +2,11 @@ package com.proyectoFinal.grupo2.Clases;
 
 import java.io.Serializable;
 
+<<<<<<< Updated upstream
 public class Casilla implements Serializable {
+=======
+public class Casilla implements Serializable{
+>>>>>>> Stashed changes
 	private int posFila;
 	private int posColumna;
 	private boolean mina;

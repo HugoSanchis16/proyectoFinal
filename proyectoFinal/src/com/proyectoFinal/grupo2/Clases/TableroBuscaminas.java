@@ -13,8 +13,12 @@ import java.util.Base64;
 import java.util.Random;
 
 public class TableroBuscaminas implements Serializable {
+<<<<<<< Updated upstream
 
 	private static final long serialVersionUID = 1L;
+=======
+	private static final long serialVersionUID = 9050978109240272275L;
+>>>>>>> Stashed changes
 
 	Casilla[][] casillas;
 
@@ -284,6 +288,11 @@ public class TableroBuscaminas implements Serializable {
 		this.minasEnCasillas = minasEnCasillas;
 	}
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 	public static String serializeTablero(TableroBuscaminas tablero) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -296,6 +305,7 @@ public class TableroBuscaminas implements Serializable {
 			e.printStackTrace();
 		}
 		return null;
+<<<<<<< Updated upstream
 	}
 
 	public static TableroBuscaminas deserializeTablero(String tableroSerializado) {
@@ -311,5 +321,22 @@ public class TableroBuscaminas implements Serializable {
 			e.printStackTrace();
 			return null;
 		}
+=======
+>>>>>>> Stashed changes
 	}
+	
+	 public static TableroBuscaminas deserializeTablero(String tableroSerializado) {
+	        try {
+	            byte[] bytes = Base64.getDecoder().decode(tableroSerializado);
+	            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+	            ObjectInputStream ois = new ObjectInputStream(bis);
+	            TableroBuscaminas tablero = (TableroBuscaminas) ois.readObject();
+	            ois.close();
+	            bis.close();
+	            return tablero;
+	        } catch (IOException | ClassNotFoundException e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
 }
