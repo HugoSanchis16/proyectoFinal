@@ -12,7 +12,35 @@ public class BDUtils {
 	private static String urlBaseDades = "jdbc:mysql://" + BD.getHost() + ":3306/1daw02_pro";
 	private static String usuariBD = BD.getUsuario();
 	private static String contrasenyaBD = BD.getContrasena();
+	
+	
+	public static boolean usuarioExiste(String email, String contrasena) {
+		/**
+		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
+		 * de la contraseña
+		 */
 
+		// Variables
+
+		try {
+			elegirClaseBD();
+
+			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+
+			Statement s = c.createStatement();
+			ResultSet r = s.executeQuery("SELECT * FROM `usuarios` WHERE correo='" + email + "'");
+
+			while (r.next()) {
+				if ((r.getString("correo").equals(email)) && (r.getString("contrasena").equals(contrasena))) {
+					c.close();
+					return true;
+				} 
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	public static Usuario comprobarLogin(String email, String contrasena) {
 		/**
 		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash de la contraseña

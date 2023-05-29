@@ -15,15 +15,16 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.proyectoFinal.grupo2.Clases.BDUtils;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textFieldCorreo;
 	private JPasswordField contrasenya;
 
-	
 	/**
 	 * Launch the application.
 	 */
@@ -59,18 +60,18 @@ public class Login extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
-		JLabel nomUsuari = new JLabel("USUARI");
+		
+		JLabel nomUsuari = new JLabel("Correo");
 		nomUsuari.setFont(new Font("Yu Gothic UI", Font.PLAIN, 23));
 		nomUsuari.setHorizontalAlignment(SwingConstants.LEFT);
 		nomUsuari.setBounds(161, 126, 98, 45);
 		contentPane.add(nomUsuari);
 
-		textField = new JTextField();
-		textField.setToolTipText("");
-		textField.setBounds(161, 173, 407, 38);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textFieldCorreo = new JTextField();
+		textFieldCorreo.setToolTipText("");
+		textFieldCorreo.setBounds(161, 173, 407, 38);
+		contentPane.add(textFieldCorreo);
+		textFieldCorreo.setColumns(10);
 
 		JButton btnNewButton = new JButton("Iniciar sesió");
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -81,13 +82,13 @@ public class Login extends JFrame {
 		btnRegistrarse.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnRegistrarse.setBounds(161, 404, 407, 38);
 		contentPane.add(btnRegistrarse);
-		
+
 		contrasenya = new JPasswordField();
 		contrasenya.setToolTipText("");
 		contrasenya.setColumns(10);
 		contrasenya.setBounds(161, 278, 407, 38);
 		contentPane.add(contrasenya);
-		
+
 		JLabel lblContrasenya = new JLabel("CONTRASENYA");
 		lblContrasenya.setHorizontalAlignment(SwingConstants.LEFT);
 		lblContrasenya.setFont(new Font("Yu Gothic UI", Font.PLAIN, 23));
@@ -96,9 +97,38 @@ public class Login extends JFrame {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(90, 98, 167));
-		panel.setBounds(126, 62, 477, 508);
+		panel.setBounds(126, 50, 477, 508);
 		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel error = new JLabel("");
+		error.setHorizontalAlignment(SwingConstants.CENTER);
+		error.setFont(new Font("Arial", Font.BOLD, 15));
+		error.setForeground(new Color(255, 0, 0));
+		error.setBounds(39, 421, 319, 14);
+		panel.add(error);
+
+		
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String contra = String.valueOf(contrasenya.getPassword());
+				String correo = textFieldCorreo.getText();
+				System.out.println(contra);
+				System.out.println(correo);
+				if (BDUtils.usuarioExiste(correo, contra)) {
+					menuPrincipal menu= new menuPrincipal(BDUtils.comprobarLogin(correo, contra));
+					menu.setVisible(true);
+					setVisible(false);
+					dispose();
+				}else {
+					error.setText("El usuario o contraseña no existe");
+					System.out.println(contra);
+					System.out.println(correo);
+				}
+			}
+		});
 //		
 		setResizable(false);
 	}
 }
+
