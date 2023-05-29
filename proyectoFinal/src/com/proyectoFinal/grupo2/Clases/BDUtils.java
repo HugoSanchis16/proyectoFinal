@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.proyectoFinal.grupo2.Clases.Usuario;
 
@@ -15,32 +17,31 @@ public class BDUtils {
 
 	public static Usuario comprobarLogin(String email, String contrasena) {
 		/**
-		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash de la contraseña
+		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
+		 * de la contraseña
 		 */
-		
+
 		// Variables
 		boolean usuarioEncontrado = false;
-		
-		
+
 		try {
 			elegirClaseBD();
 
 			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
 
 			Statement s = c.createStatement();
-			ResultSet r = s.executeQuery(
-					"SELECT * FROM `usuarios` WHERE correo='" + email + "'");
+			ResultSet r = s.executeQuery("SELECT * FROM `usuarios` WHERE correo='" + email + "'");
 
 			while (r.next()) {
-				if ((r.getString("correo").equals(email))
-						&& (r.getString("contrasena").equals(contrasena))) {
-					Usuario usuario = new Usuario(r.getInt("id"), r.getString("nombre"), r.getString("apellidos"), r.getString("imagen"), r.getString("poblacion"), r.getString("correo"), r.getString("contrasena"));
-					
+				if ((r.getString("correo").equals(email)) && (r.getString("contrasena").equals(contrasena))) {
+					Usuario usuario = new Usuario(r.getInt("id"), r.getString("nombre"), r.getString("apellidos"),
+							r.getString("imagen"), r.getString("poblacion"), r.getString("correo"),
+							r.getString("contrasena"));
+
 					c.close();
 					return usuario;
 				}
 			}
-
 
 //			while (r.next()) {
 //				System.out.println("Total Alumnes: "+r.getInt("TOTAL"));
@@ -58,6 +59,74 @@ public class BDUtils {
 
 		return null;
 	}
+
+	public static void guardarPartida(String email, String base64Partida , String nombrePartida) {
+		/**
+		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
+		 * de la contraseña
+		 */
+
+		try {
+			elegirClaseBD();
+
+			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+
+			// Enviar una sentència SQL per recuperar els clients
+			Statement s = c.createStatement();
+			int r = s.executeUpdate(
+					"INSERT INTO `buscaminas` (`id_juego`, `usuario`, `matriz`, `nombre_partida`) VALUES (NULL, '" + email + "', '" + base64Partida + "', '" + nombrePartida + "')");
+
+			// Tancar la connexió
+			c.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static ArrayList<HashMap<String, String>> recuperarPartidas(String email) {
+		ArrayList<HashMap<String, String>> partidas = null;
+		HashMap<String, String> temp = null;
+		try {
+			elegirClaseBD();
+			
+
+			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+
+			Statement s = c.createStatement();
+			ResultSet r = s.executeQuery("SELECT * FROM `usuarios` WHERE usuario='" + email + "'");
+
+			while (r.next()) {
+				temp.put("id_juego", r.getString("correo"));
+				temp.put("email", r.getString("usuario"));
+				temp.put("matriz", r.getString("matriz"));
+				temp.put("nombre_partida", r.getString("nombre_partida"));
+				
+				partidas.add(temp);
+				
+				temp.clear();
+			}
+
+			c.close();
+//			while (r.next()) {
+//				System.out.println("Total Alumnes: "+r.getInt("TOTAL"));
+//			}
+//			
+//			s = c.createStatement();
+//			r = s.executeQuery("SELECT * FROM alumne");
+//			
+
+			// Tancar la connexió
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return partidas;
+
+	}
+	
+	
 	// Crealo así
 //		Usuario usuariotemp = new Usuario("", "", "", "", "", "");
 //		Usuario usuario = BDUtils.registrarUsuario(usuariotemp);
