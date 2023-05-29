@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.proyectoFinal.grupo2.Clases.Usuario;
+import com.proyectoFinal.grupo2.Clases.VerPerfil;
 import com.proyectoFinal.grupo2.Juegos.*;
 
 import java.awt.BorderLayout;
@@ -43,32 +45,31 @@ public class menuPrincipal extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-
-		try {
-			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					menuPrincipal frame = new menuPrincipal("Jose");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//
+//		try {
+//			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					menuPrincipal frame = new menuPrincipal("Jose");
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public menuPrincipal(String nom) {
+	public menuPrincipal(Usuario usuario) {
 		super("Menu Principal");
-		this.nomUsuari = nom;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 925, 600);
 
@@ -82,8 +83,20 @@ public class menuPrincipal extends JFrame {
 		ImageIcon imagen = new ImageIcon(menuPrincipal.class.getResource("./Imagenes/cruzRoja.png"));
 		Image imageRedimensionada = imagen.getImage().getScaledInstance(25, -1, Image.SCALE_SMOOTH);
 		ImageIcon fotoRedimensionada = new ImageIcon(imageRedimensionada);
+		JMenuItem verperfil= new JMenuItem("Ver Perfil");
+		verperfil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			VerPerfil verperfil= new VerPerfil(usuario);
+			verperfil.setVisible(true);
+			}
+		});
+		ImageIcon imagenPerfil = new ImageIcon(menuPrincipal.class.getResource("./Imagenes/perfil.png"));
+		Image imageRedimensionada2 = imagenPerfil.getImage().getScaledInstance(25, -1, Image.SCALE_SMOOTH);
+		ImageIcon fotoRedimensionada2 = new ImageIcon(imageRedimensionada2);
 		mntmNewMenuItem.setIcon(fotoRedimensionada);
 		mnNewMenu.add(mntmNewMenuItem);
+		verperfil.setIcon(fotoRedimensionada2);
+		mnNewMenu.add(verperfil);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -94,7 +107,7 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(panelBienvenida, BorderLayout.NORTH);
 		panelBienvenida.setLayout(new GridLayout(2, 1, 0, 0));
 
-		JLabel labelBienvenida = new JLabel("Bienvenido, " + nomUsuari);
+		JLabel labelBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
 		labelBienvenida.setBackground(new Color(255, 255, 255));
 		labelBienvenida.setFont(new Font("Arial", Font.BOLD, 30));
 		labelBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
