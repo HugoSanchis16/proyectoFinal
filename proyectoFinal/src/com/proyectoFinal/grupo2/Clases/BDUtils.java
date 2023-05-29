@@ -88,7 +88,7 @@ public class BDUtils {
 		return null;
 	}
 
-	public static void guardarPartida(String email, String base64Partida , String nombrePartida) {
+	public static void guardarPartidaBuscaMinas(String email, String base64Partida , String nombrePartida) {
 		/**
 		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
 		 * de la contraseña
@@ -112,7 +112,7 @@ public class BDUtils {
 
 	}
 
-	public static ArrayList<HashMap<String, String>> recuperarPartidas(String email) {
+	public static ArrayList<HashMap<String, String>> recuperarPartidasBuscaMinas(String email) {
 		ArrayList<HashMap<String, String>> partidas = null;
 		HashMap<String, String> temp = null;
 		try {

@@ -183,7 +183,7 @@ public class JocDeLaVida extends JFrame implements ActionListener {
 			JDialog Dialog2 = new JDialog(this, "Escoge el modo de juego!", true);
 
 			Dialog2.setLayout(new FlowLayout());
-			Dialog2.setTitle("Otro Diálogo");
+			Dialog2.setTitle("Escoge la figura personalizada");
 			Dialog2.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
 			// Mostrar el nuevo diálogo
