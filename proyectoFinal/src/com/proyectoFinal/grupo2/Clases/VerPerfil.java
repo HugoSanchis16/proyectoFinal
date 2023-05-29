@@ -60,41 +60,43 @@ public class VerPerfil extends JFrame {
 	public VerPerfil(Usuario usuario) {
 		// Configuración de la ventana
 		setTitle("Perfil");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(500, 500);
 		setLocationRelativeTo(null); // Centrar la ventana en la pantalla
 		setResizable(false);
 
 		// Panel principal
 		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
 
 		// Imagen de perfil
 		ImageIcon imagenPerfil = new ImageIcon(menuPrincipal.class.getResource("./Imagenes/perfil.png"));
 		; // Ruta de la imagen de perfil
 		Image imagenRedimensionada = imagenPerfil.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
 		imagenPerfilLabel = new JLabel(new ImageIcon(imagenRedimensionada));
+		imagenPerfilLabel.setBounds(12, 12, 486, 210);
 		imagenPerfilLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		imagenPerfilLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// Información del perfil
 		JPanel infoPanel = new JPanel(new GridLayout(5, 1));
+		infoPanel.setBounds(0, 220, 498, 230);
 		nomLabel = new JLabel("Nombre: " + usuario.getNombre() + " " + usuario.getApellidos());
 		poblacioLabel = new JLabel("Población: " + usuario.getPoblacion());
 		correuLabel = new JLabel("Correo electrónico: " + usuario.getCorreoElectronico());
 
 		// Botón "Atrás"
 		JButton atrasButton = new JButton("Atrás");
+		atrasButton.setBounds(0, 450, 498, 25);
+		panel.setLayout(null);
 
 		// Agregar componentes al panel principal
-		panel.add(imagenPerfilLabel, BorderLayout.NORTH);
+		panel.add(imagenPerfilLabel);
 		infoPanel.add(nomLabel);
 		infoPanel.add(poblacioLabel);
 		infoPanel.add(correuLabel);
-		panel.add(infoPanel, BorderLayout.CENTER);
-		panel.add(atrasButton, BorderLayout.SOUTH);
+		panel.add(infoPanel);
+		panel.add(atrasButton);
 
-		add(panel);
+		getContentPane().add(panel);
 	}
 
 }

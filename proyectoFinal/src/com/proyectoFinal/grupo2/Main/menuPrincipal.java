@@ -1,29 +1,20 @@
 package com.proyectoFinal.grupo2.Main;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.proyectoFinal.grupo2.Clases.Usuario;
 import com.proyectoFinal.grupo2.Clases.VerPerfil;
 import com.proyectoFinal.grupo2.Juegos.*;
-
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-
 import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -38,7 +29,6 @@ public class menuPrincipal extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private String nomUsuari;
 	private BuscaMinas ventanaBuscaMinas;
 	private JocDeLaVida ventanaJuegoDeLaVida;
 

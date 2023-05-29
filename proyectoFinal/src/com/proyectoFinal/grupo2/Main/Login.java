@@ -113,8 +113,6 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String contra = String.valueOf(contrasenya.getPassword());
 				String correo = textFieldCorreo.getText();
-				System.out.println(contra);
-				System.out.println(correo);
 				if (BDUtils.usuarioExiste(correo, contra)) {
 					menuPrincipal menu= new menuPrincipal(BDUtils.comprobarLogin(correo, contra));
 					menu.setVisible(true);

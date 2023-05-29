@@ -19,14 +19,17 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.proyectoFinal.grupo2.Clases.*;
+
 
 public class Registre extends JFrame {
+	private static final long serialVersionUID = 1L;
 	JFileChooser fileChooser = new JFileChooser();
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField apellidosField;
 	private JTextField poblacioField;
-	private JTextField textField_3;
+    private JTextField correoField;
 	private JPasswordField contrasenya;
 	private JPasswordField contrasenya2;
 
@@ -45,6 +48,7 @@ public class Registre extends JFrame {
 			public void run() {
 				try {
 					Registre frame = new Registre();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,20 +70,20 @@ public class Registre extends JFrame {
 				
 			
 				
-		JPanel panel = new JPanel();
+				JPanel panel = new JPanel();
 				panel.setBackground(new Color(90, 98, 167));
 				panel.setBounds(126, 37, 477, 701);
 				contentPane.add(panel);
 				panel.setLayout(null);
 				
 				JLabel nomUsuari = new JLabel("REGISTRE");
-				nomUsuari.setBounds(181, 10, 98, 45);
+				nomUsuari.setBounds(139, 12, 196, 45);
 				panel.add(nomUsuari);
 				nomUsuari.setFont(new Font("Yu Gothic UI", Font.PLAIN, 23));
 				nomUsuari.setHorizontalAlignment(SwingConstants.CENTER);
 				
 				JButton btnRegistrarse = new JButton("Registrarse");
-				btnRegistrarse.setBounds(37, 490, 407, 38);
+				btnRegistrarse.setBounds(37, 539, 407, 38);
 				panel.add(btnRegistrarse);
 				btnRegistrarse.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 				
@@ -95,7 +99,11 @@ public class Registre extends JFrame {
 				lblContrasenya.setHorizontalAlignment(SwingConstants.LEFT);
 				lblContrasenya.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
 				
-				
+		        correoField = new JTextField();
+		        correoField.setToolTipText("");
+		        correoField.setColumns(10);
+		        correoField.setBounds(37, 354, 407, 31);
+		        panel.add(correoField);
 				
 				JButton btnNewButton = new JButton("Insereix");
 				btnNewButton.addActionListener(new ActionListener() {
@@ -143,48 +151,54 @@ public class Registre extends JFrame {
 				JLabel lblPoblacio = new JLabel("POBLACIO");
 				lblPoblacio.setHorizontalAlignment(SwingConstants.LEFT);
 				lblPoblacio.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-				lblPoblacio.setBounds(37, 256, 98, 31);
+				lblPoblacio.setBounds(37, 256, 136, 31);
 				panel.add(lblPoblacio);
 				
 				JLabel lblContrasenya_2 = new JLabel("CONTRASENYA");
 				lblContrasenya_2.setHorizontalAlignment(SwingConstants.LEFT);
 				lblContrasenya_2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-				lblContrasenya_2.setBounds(37, 327, 136, 31);
+				lblContrasenya_2.setBounds(37, 385, 199, 31);
 				panel.add(lblContrasenya_2);
 				
 				contrasenya = new JPasswordField();
 				contrasenya.setToolTipText("");
 				contrasenya.setColumns(10);
-				contrasenya.setBounds(37, 357, 407, 31);
+				contrasenya.setBounds(37, 415, 407, 31);
 				panel.add(contrasenya);
 				
 				JLabel lblContrasenya_2_1 = new JLabel("REPETEIX CONTRASENYA");
 				lblContrasenya_2_1.setHorizontalAlignment(SwingConstants.LEFT);
 				lblContrasenya_2_1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-				lblContrasenya_2_1.setBounds(37, 398, 242, 31);
+				lblContrasenya_2_1.setBounds(37, 456, 274, 31);
 				panel.add(lblContrasenya_2_1);
 				
 				contrasenya2 = new JPasswordField();
 				contrasenya2.setToolTipText("");
 contrasenya2.setColumns(10);
-				contrasenya2.setBounds(37, 439, 407, 31);
+				contrasenya2.setBounds(37, 497, 407, 31);
 				panel.add(contrasenya2);
 				
 				JLabel Errors = new JLabel("");
 				Errors.setForeground(Color.RED);
 				Errors.setHorizontalAlignment(SwingConstants.LEFT);
 				Errors.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-				Errors.setBounds(37, 538, 407, 153);
+				Errors.setBounds(37, 588, 407, 103);
 				panel.add(Errors);
-//				
+				
+				JLabel lblContrasenya_2_2 = new JLabel("CORREU");
+				lblContrasenya_2_2.setHorizontalAlignment(SwingConstants.LEFT);
+				lblContrasenya_2_2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
+				lblContrasenya_2_2.setBounds(37, 324, 149, 31);
+				panel.add(lblContrasenya_2_2);
 				setResizable(false);
 			
 			
 				btnRegistrarse.addActionListener(e -> {
 					String nombre = textField.getText();
 					String apellidos = apellidosField.getText();
-//					String imagen = textField_2.getText();
+					String image = "hola";
 					String poblacio = poblacioField.getText();
+					String correo = correoField.getText();
 					String contra =  String.valueOf(contrasenya.getPassword());
 					String contra2 =  String.valueOf(contrasenya2.getPassword());
 					String error="";
@@ -260,7 +274,13 @@ contrasenya2.setColumns(10);
 						if(error=="") {
 							//Lanzar funcion para escribir todo en la base de datos
 							
-//							Usuario usuarioRegistrado = new Usuario();
+							Usuario usuarioRegistrado = new Usuario(nombre, apellidos, image, poblacio, correo, contra);
+							System.out.println(usuarioRegistrado.toString());
+							BDUtils.registrarUsuario(usuarioRegistrado);
+							menuPrincipal menu= new menuPrincipal(usuarioRegistrado);
+							menu.setVisible(true);
+							setVisible(false);
+							dispose();
 						}
 
 				});
