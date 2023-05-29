@@ -14,8 +14,7 @@ public class BDUtils {
 	private static String urlBaseDades = "jdbc:mysql://" + BD.getHost() + ":3306/1daw02_pro";
 	private static String usuariBD = BD.getUsuario();
 	private static String contrasenyaBD = BD.getContrasena();
-	
-	
+
 	public static boolean usuarioExiste(String email, String contrasena) {
 		/**
 		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
@@ -36,13 +35,14 @@ public class BDUtils {
 				if ((r.getString("correo").equals(email)) && (r.getString("contrasena").equals(contrasena))) {
 					c.close();
 					return true;
-				} 
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
+
 	public static Usuario comprobarLogin(String email, String contrasena) {
 		/**
 		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
@@ -50,15 +50,13 @@ public class BDUtils {
 		 */
 
 		// Variables
-		boolean usuarioEncontrado = false;
-
 		try {
 			elegirClaseBD();
 
 			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
 
 			Statement s = c.createStatement();
-			ResultSet r = s.executeQuery("SELECT * FROM `usuarios` WHERE correo='" + email + "'");
+			ResultSet r = s.executeQuery("SELECT * FROM `buscaminas`WHERE correo='" + email + "'");
 
 			while (r.next()) {
 				if ((r.getString("correo").equals(email)) && (r.getString("contrasena").equals(contrasena))) {
@@ -88,7 +86,7 @@ public class BDUtils {
 		return null;
 	}
 
-	public static void guardarPartidaBuscaMinas(String email, String base64Partida , String nombrePartida) {
+	public static boolean guardarPartidaBuscaMinas(String email, String base64Partida, String nombrePartida) {
 		/**
 		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
 		 * de la contraseña
@@ -102,63 +100,55 @@ public class BDUtils {
 			// Enviar una sentència SQL per recuperar els clients
 			Statement s = c.createStatement();
 			int r = s.executeUpdate(
-					"INSERT INTO `buscaminas` (`id_juego`, `usuario`, `matriz`, `nombre_partida`) VALUES (NULL, '" + email + "', '" + base64Partida + "', '" + nombrePartida + "')");
+					"INSERT INTO `buscaminas` (`id_juego`, `usuario`, `matriz`, `nombre_partida`) VALUES (NULL, '"
+							+ email + "', '" + base64Partida + "', '" + nombrePartida + "')");
 
-			// Tancar la connexió
-			c.close();
+			if (r > 0) {
+				// Se ha guardado correctamente la partida
+				// Tancar la connexió
+				c.close();
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return false;
 
 	}
 
 	public static ArrayList<HashMap<String, String>> recuperarPartidasBuscaMinas(String email) {
-		ArrayList<HashMap<String, String>> partidas = null;
-		HashMap<String, String> temp = null;
-		try {
-			elegirClaseBD();
-			
+	    ArrayList<HashMap<String, String>> partidas = new ArrayList<>();
 
-			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+		 try {
+		        elegirClaseBD();
 
-			Statement s = c.createStatement();
-			ResultSet r = s.executeQuery("SELECT * FROM `usuarios` WHERE usuario='" + email + "'");
+		        Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
 
-			while (r.next()) {
-				temp.put("id_juego", r.getString("correo"));
-				temp.put("email", r.getString("usuario"));
-				temp.put("matriz", r.getString("matriz"));
-				temp.put("nombre_partida", r.getString("nombre_partida"));
-				
-				partidas.add(temp);
-				
-				temp.clear();
-			}
+		        Statement s = c.createStatement();
+		        ResultSet r = s.executeQuery("SELECT * FROM `buscaminas` WHERE usuario='" + email + "'");
 
-			c.close();
-//			while (r.next()) {
-//				System.out.println("Total Alumnes: "+r.getInt("TOTAL"));
-//			}
-//			
-//			s = c.createStatement();
-//			r = s.executeQuery("SELECT * FROM alumne");
-//			
+		        while (r.next()) {
+		        	HashMap<String, String> temp = new HashMap<>();
+		            temp.put("id_juego", r.getString("id_juego"));
+		            temp.put("email", r.getString("usuario"));
+		            temp.put("matriz", r.getString("matriz"));
+		            temp.put("nombre_partida", r.getString("nombre_partida"));
 
-			// Tancar la connexió
+		            partidas.add(temp);
+		        }
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		        c.close();
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+
+		    return partidas;
 		}
 
-		return partidas;
-
-	}
-	
-	
 	// Crealo así
 //		Usuario usuariotemp = new Usuario("", "", "", "", "", "");
 //		Usuario usuario = BDUtils.registrarUsuario(usuariotemp);
-	public static void registrarUsuario(Usuario usuario) {
+	public static boolean registrarUsuario(Usuario usuario) {
 		/**
 		 * Crear constructor sin id
 		 */
@@ -178,11 +168,16 @@ public class BDUtils {
 							+ usuario.getCorreoElectronico() + "', '" + usuario.getContrasena() + "')");
 
 			// Tancar la connexió
-			c.close();
+
+			if (r > 0) {
+				// Se ha registrado correctamente al usuario
+				c.close();
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		return false;
 	}
 
 	public static void elegirClaseBD() {

@@ -60,7 +60,7 @@ public class Login extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel nomUsuari = new JLabel("Correo");
 		nomUsuari.setFont(new Font("Yu Gothic UI", Font.PLAIN, 23));
 		nomUsuari.setHorizontalAlignment(SwingConstants.LEFT);
@@ -79,6 +79,13 @@ public class Login extends JFrame {
 		contentPane.add(btnNewButton);
 
 		JButton btnRegistrarse = new JButton("Registrarse");
+		btnRegistrarse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				Registre registre = new Registre();
+				registre.setVisible(true);
+			}
+		});
 		btnRegistrarse.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		btnRegistrarse.setBounds(161, 404, 407, 38);
 		contentPane.add(btnRegistrarse);
@@ -100,7 +107,7 @@ public class Login extends JFrame {
 		panel.setBounds(126, 50, 477, 508);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel error = new JLabel("");
 		error.setHorizontalAlignment(SwingConstants.CENTER);
 		error.setFont(new Font("Arial", Font.BOLD, 15));
@@ -108,20 +115,17 @@ public class Login extends JFrame {
 		error.setBounds(39, 421, 319, 14);
 		panel.add(error);
 
-		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String contra = String.valueOf(contrasenya.getPassword());
 				String correo = textFieldCorreo.getText();
 				if (BDUtils.usuarioExiste(correo, contra)) {
-					menuPrincipal menu= new menuPrincipal(BDUtils.comprobarLogin(correo, contra));
+					menuPrincipal menu = new menuPrincipal(BDUtils.comprobarLogin(correo, contra));
 					menu.setVisible(true);
 					setVisible(false);
 					dispose();
-				}else {
+				} else {
 					error.setText("El usuario o contraseña no existe");
-					System.out.println(contra);
-					System.out.println(correo);
 				}
 			}
 		});
@@ -129,4 +133,3 @@ public class Login extends JFrame {
 		setResizable(false);
 	}
 }
-

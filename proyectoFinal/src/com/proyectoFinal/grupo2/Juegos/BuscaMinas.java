@@ -1,28 +1,33 @@
 package com.proyectoFinal.grupo2.Juegos;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.proyectoFinal.grupo2.Clases.BDUtils;
 import com.proyectoFinal.grupo2.Clases.Casilla;
 import com.proyectoFinal.grupo2.Clases.TableroBuscaminas;
+import com.proyectoFinal.grupo2.Clases.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.Timer;
 
@@ -48,32 +53,34 @@ public class BuscaMinas extends JFrame {
 	boolean partidaVigente;
 	Timer timer;
 	TableroBuscaminas tableroBuscaminas;
+	public Usuario usuarioBuscaMinas;
 
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
 
-		try {
-			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-
-					BuscaMinas frame = new BuscaMinas();
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//		try {
+//			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//
+//					BuscaMinas frame = new BuscaMinas();
+//
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public BuscaMinas() {
+	public BuscaMinas(Usuario usuario) {
+		usuarioBuscaMinas = usuario;
 		String estiloCSS = "<html><body><p style='font-size: 16px;'>Selecciona un nivel</p></body></html>";
 		JLabel label = new JLabel(estiloCSS);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -95,14 +102,10 @@ public class BuscaMinas extends JFrame {
 			botonReset.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					dispose();
-					int seleccion = JOptionPane.showOptionDialog(null,
-							"<html><body><p style='font-size: 16px;'>Selecciona un nivel</p></body></html>",
-							"Buscaminas", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, niveles,
-							niveles[0]);
-					if (seleccion != -1) {
-						BuscaMinas frame = new BuscaMinas();
-						frame.setVisible(true);
-					}
+
+					BuscaMinas frame = new BuscaMinas(usuario);
+					frame.setVisible(true);
+
 				}
 			});
 			botonReset.setHorizontalAlignment(SwingConstants.CENTER);
@@ -113,10 +116,12 @@ public class BuscaMinas extends JFrame {
 			botonGuardar.setHorizontalAlignment(SwingConstants.CENTER);
 			botonGuardar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					timer.stop();
-					tableroBuscaminas.setSegundosPartida(segundosTrascurridos);
-					String tableroSerializado = TableroBuscaminas.serializeTablero(tableroBuscaminas);
-					System.out.println(tableroSerializado);
+					if (BDUtils.guardarPartidaBuscaMinas(usuario.getCorreoElectronico(), serializarTablero(),
+							JOptionPane.showInputDialog("Introduce un nombre:"))) {
+						JOptionPane.showMessageDialog(null, "Partida guardada correctamente.", "Éxito",
+								JOptionPane.INFORMATION_MESSAGE);
+						dispose();
+					}
 
 				}
 			});
@@ -165,8 +170,8 @@ public class BuscaMinas extends JFrame {
 				cantidadMinas = 1;
 				crearBotones(tamanoTauler);
 				crearTablero();
-				cargarPartida();
-				break;
+				setVisible(false);
+				mostrarPartidas(usuarioBuscaMinas.getCorreoElectronico());
 			}
 			JPanel panelInformacion = new JPanel();
 			contentPane.add(panelInformacion, BorderLayout.NORTH);
@@ -377,7 +382,7 @@ public class BuscaMinas extends JFrame {
 		}
 	}
 
-	private void mostrarDialogoPartidaGanada() {
+	public void mostrarDialogoPartidaGanada() {
 		timer.stop();
 		String rutaImagen2 = "/com/proyectoFinal/grupo2/Juegos/Imagenes/winBuscaMinas.png";
 		ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen2));
@@ -389,14 +394,14 @@ public class BuscaMinas extends JFrame {
 				JOptionPane.PLAIN_MESSAGE, iconRedimensionado2, opcionesTrasAcabar, opcionesTrasAcabar[0]);
 		if (seleccion == 0) {
 			dispose();
-			BuscaMinas buscaMinas = new BuscaMinas();
+			BuscaMinas buscaMinas = new BuscaMinas(usuarioBuscaMinas);
 			buscaMinas.setVisible(true);
 		} else {
 			dispose();
 		}
 	}
 
-	private void mostrarDialogoPartidaPerdida() {
+	public void mostrarDialogoPartidaPerdida() {
 		timer.stop();
 		String rutaImagen2 = "/com/proyectoFinal/grupo2/Juegos/Imagenes/imagenBuscaMinasDanger.png";
 		ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen2));
@@ -408,18 +413,104 @@ public class BuscaMinas extends JFrame {
 				JOptionPane.PLAIN_MESSAGE, iconRedimensionado2, opcionesTrasAcabar, opcionesTrasAcabar[0]);
 		if (seleccion == 0) {
 			dispose();
-			BuscaMinas buscaMinas = new BuscaMinas();
+			BuscaMinas buscaMinas = new BuscaMinas(usuarioBuscaMinas);
 			buscaMinas.setVisible(true);
 		} else {
 			dispose();
 		}
 	}
 
-	private void cargarPartida() {
+	public void mostrarPartidas(String email) {
+		ArrayList<HashMap<String, String>> partidasArrayList = BDUtils.recuperarPartidasBuscaMinas(email);
+		System.out.println(partidasArrayList);
+
+		if (partidasArrayList.size() > 0) {
+			JDialog dialogo = new JDialog();
+			dialogo.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialogo.setUndecorated(true);
+
+			JPanel panelPrincipal = new JPanel();
+			panelPrincipal.setLayout(new BorderLayout());
+
+			JLabel label = new JLabel("<html><body><p style='font-size: 15px;'>¡Elige tu partida!</p></body></html>");
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			label.setBorder(new EmptyBorder(10, 0, 15, 0));
+			panelPrincipal.add(label, BorderLayout.NORTH);
+
+			JPanel panelBotones = new JPanel();
+			panelBotones.setLayout(new GridBagLayout());
+
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 1.0;
+			constraints.insets = new Insets(10, 10, 10, 10);
+
+			for (HashMap<String, String> partida : partidasArrayList) {
+				String nombrePartida = partida.get("nombre_partida");
+
+				JButton boton = new JButton("<html><body><p style='font-size: 14px; font-weight: bold;'>"
+						+ nombrePartida + "</p></body></html>");
+				boton.setFocusPainted(false);
+				boton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+				String partidaElegida64 = partida.get("matriz"); // Capturar la partida actual
+				boton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						System.out.println("Has hecho clic en el botón: " + nombrePartida);
+						cargarPartida(partidaElegida64); // Llamar a la función cargarPartida con el valor seleccionado
+						dialogo.dispose();
+						setVisible(true);
+					}
+				});
+
+				constraints.gridy++; // Incrementar el índice de fila en el GridBagLayout
+
+				panelBotones.add(boton, constraints);
+			}
+
+			panelPrincipal.add(panelBotones, BorderLayout.CENTER);
+			dialogo.getContentPane().add(panelPrincipal);
+			dialogo.pack();
+			dialogo.setLocationRelativeTo(null);
+			dialogo.setVisible(true);
+		} else {
+			JDialog noPartidasDialogo = new JDialog();
+			noPartidasDialogo.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			noPartidasDialogo.setTitle("Aviso");
+			noPartidasDialogo.setModal(true);
+
+			JPanel panelPrincipal = new JPanel();
+			panelPrincipal.setLayout(new BorderLayout());
+
+			JLabel label = new JLabel("No hay partidas guardadas.");
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			label.setBorder(new EmptyBorder(15, 15, 15, 15));
+			panelPrincipal.add(label, BorderLayout.CENTER);
+
+			JButton botonAceptar = new JButton("Aceptar");
+			botonAceptar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					noPartidasDialogo.dispose();
+				}
+			});
+
+			JPanel panelBoton = new JPanel();
+			panelBoton.add(botonAceptar);
+			panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
+
+			noPartidasDialogo.getContentPane().add(panelPrincipal);
+			noPartidasDialogo.setPreferredSize(new Dimension(300, 150));
+			noPartidasDialogo.pack();
+			noPartidasDialogo.setLocationRelativeTo(null);
+			noPartidasDialogo.setVisible(true);
+		}
+	}
+
+	private void cargarPartida(String partida64) {
 
 		try {
-			String tableroSerializado = JOptionPane.showInputDialog("Introduce el string de la partida guardada:");
-			TableroBuscaminas tablero = TableroBuscaminas.deserializeTablero(tableroSerializado);
+
+			TableroBuscaminas tablero = TableroBuscaminas.deserializeTablero(partida64);
 
 			// Actualiza el tablero y otros elementos necesarios con los valores cargados
 			tableroBuscaminas = tablero;
@@ -470,6 +561,14 @@ public class BuscaMinas extends JFrame {
 			}
 		}
 
+	}
+
+	public String serializarTablero() {
+		timer.stop();
+		tableroBuscaminas.setSegundosPartida(segundosTrascurridos);
+		String tableroSerializado = TableroBuscaminas.serializeTablero(tableroBuscaminas);
+		System.out.println(tableroSerializado);
+		return tableroSerializado;
 	}
 
 }

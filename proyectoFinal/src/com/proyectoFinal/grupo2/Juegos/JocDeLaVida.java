@@ -78,7 +78,7 @@ public class JocDeLaVida extends JFrame implements ActionListener {
 
 	public JocDeLaVida() {
 		setTitle("Juego de la Vida");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(new BorderLayout());
 
 		botonIniciar = new JButton("Iniciar");
