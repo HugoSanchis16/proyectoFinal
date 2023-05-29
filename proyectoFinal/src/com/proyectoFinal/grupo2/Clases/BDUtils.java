@@ -56,7 +56,7 @@ public class BDUtils {
 			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
 
 			Statement s = c.createStatement();
-			ResultSet r = s.executeQuery("SELECT * FROM `buscaminas`WHERE correo='" + email + "'");
+			ResultSet r = s.executeQuery("SELECT * FROM `usuarios` WHERE correo='" + email + "'");
 
 			while (r.next()) {
 				if ((r.getString("correo").equals(email)) && (r.getString("contrasena").equals(contrasena))) {

@@ -42,29 +42,29 @@ public class menuPrincipal extends JFrame {
 	private JocDeLaVida ventanaJuegoDeLaVida;
 	private String[] opcionesDialogo = { "Si", "No" };
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-
-		try {
-			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Usuario usuario = new Usuario("Raul", "Sanz", "a", "Canals", "raul@gmail.com", "Raul1212");
-					menuPrincipal frame = new menuPrincipal(usuario);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//
+//		try {
+//			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Usuario usuario = new Usuario("Raul", "Sanz", "a", "Canals", "raul@gmail.com", "Raul1212");
+//					menuPrincipal frame = new menuPrincipal(usuario);
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
