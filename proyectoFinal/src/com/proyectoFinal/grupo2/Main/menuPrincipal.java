@@ -3,10 +3,7 @@ package com.proyectoFinal.grupo2.Main;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.proyectoFinal.grupo2.Clases.BDUtils;
-import com.proyectoFinal.grupo2.Clases.TableroBuscaminas;
 import com.proyectoFinal.grupo2.Clases.Usuario;
 import com.proyectoFinal.grupo2.Clases.VerPerfil;
 import com.proyectoFinal.grupo2.Juegos.*;
@@ -17,54 +14,25 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
 import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.EventQueue;
 
 public class menuPrincipal extends JFrame {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private BuscaMinas ventanaBuscaMinas;
 	private JocDeLaVida ventanaJuegoDeLaVida;
 	private String[] opcionesDialogo = { "Si", "No" };
-
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//
-//		try {
-//			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
-//
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Usuario usuario = new Usuario("Raul", "Sanz", "a", "Canals", "raul@gmail.com", "Raul1212");
-//					menuPrincipal frame = new menuPrincipal(usuario);
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -177,6 +145,7 @@ public class menuPrincipal extends JFrame {
 								JOptionPane.showInputDialog("Introduce un nombre para la partida:"));
 					}
 					ventanaBuscaMinas.dispose();
+					ventanaJuegoDeLaVida.dispose();
 				}
 				dispose();
 				Login login = new Login();
@@ -192,6 +161,7 @@ public class menuPrincipal extends JFrame {
 		botonCerrarSesion.setBackground(new Color(153, 0, 0)); // Cambia el color de fondo a rojo
 		botonCerrarSesion.setFont(new Font("Arial", Font.BOLD, 15));
 		panelBotones.add(botonCerrarSesion);
+		setLocationRelativeTo(null);
 	}
 
 }

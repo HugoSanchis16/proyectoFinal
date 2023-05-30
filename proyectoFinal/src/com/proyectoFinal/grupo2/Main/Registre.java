@@ -1,7 +1,6 @@
 package com.proyectoFinal.grupo2.Main;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import com.proyectoFinal.grupo2.Clases.*;
 
 public class Registre extends JFrame {
-	private static final long serialVersionUID = 1L;
+
 	JFileChooser fileChooser = new JFileChooser();
 	private JPanel contentPane;
 	private JTextField textField;
@@ -28,6 +27,7 @@ public class Registre extends JFrame {
 	private JTextField correoField;
 	private JPasswordField contrasenya;
 	private JPasswordField contrasenya2;
+	private JLabel errorNombre;
 
 	/**
 	 * Create the frame.
@@ -42,29 +42,29 @@ public class Registre extends JFrame {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(90, 98, 167));
-		panel.setBounds(126, 37, 477, 701);
+		panel.setBounds(124, 0, 478, 762);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
 		JLabel nomUsuari = new JLabel("REGISTRE");
-		nomUsuari.setBounds(139, 12, 196, 45);
+		nomUsuari.setBounds(139, 0, 196, 45);
 		panel.add(nomUsuari);
 		nomUsuari.setFont(new Font("Yu Gothic UI", Font.PLAIN, 23));
 		nomUsuari.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JButton btnRegistrarse = new JButton("Registrarse");
-		btnRegistrarse.setBounds(37, 539, 407, 38);
+		btnRegistrarse.setBounds(37, 710, 196, 38);
 		panel.add(btnRegistrarse);
 		btnRegistrarse.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 
 		textField = new JTextField();
-		textField.setBounds(37, 87, 407, 31);
+		textField.setBounds(37, 75, 407, 31);
 		panel.add(textField);
 		textField.setToolTipText("");
 		textField.setColumns(10);
 
 		JLabel lblContrasenya = new JLabel("COGNOMS");
-		lblContrasenya.setBounds(37, 123, 187, 31);
+		lblContrasenya.setBounds(37, 131, 187, 31);
 		panel.add(lblContrasenya);
 		lblContrasenya.setHorizontalAlignment(SwingConstants.LEFT);
 		lblContrasenya.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
@@ -72,7 +72,7 @@ public class Registre extends JFrame {
 		correoField = new JTextField();
 		correoField.setToolTipText("");
 		correoField.setColumns(10);
-		correoField.setBounds(37, 354, 407, 31);
+		correoField.setBounds(37, 449, 407, 31);
 		panel.add(correoField);
 
 		JButton btnNewButton = new JButton("Insereix");
@@ -91,75 +91,130 @@ public class Registre extends JFrame {
 
 		});
 		btnNewButton.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
-		btnNewButton.setBounds(139, 212, 305, 31);
+		btnNewButton.setBounds(139, 240, 305, 31);
 		panel.add(btnNewButton);
 
 		JLabel lblNom = new JLabel("NOM");
 		lblNom.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNom.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblNom.setBounds(37, 56, 187, 31);
+		lblNom.setBounds(37, 44, 187, 31);
 		panel.add(lblNom);
 
 		apellidosField = new JTextField();
 		apellidosField.setToolTipText("");
 		apellidosField.setColumns(10);
-		apellidosField.setBounds(37, 154, 407, 31);
+		apellidosField.setBounds(37, 173, 407, 31);
 		panel.add(apellidosField);
 
 		poblacioField = new JTextField();
 		poblacioField.setToolTipText("");
 		poblacioField.setColumns(10);
-		poblacioField.setBounds(37, 286, 407, 31);
+		poblacioField.setBounds(37, 349, 407, 31);
 		panel.add(poblacioField);
 
 		JLabel lblImatge = new JLabel("IMATGE");
 		lblImatge.setHorizontalAlignment(SwingConstants.LEFT);
 		lblImatge.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblImatge.setBounds(37, 213, 98, 31);
+		lblImatge.setBounds(37, 241, 98, 31);
 		panel.add(lblImatge);
 
 		JLabel lblPoblacio = new JLabel("POBLACIO");
 		lblPoblacio.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPoblacio.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblPoblacio.setBounds(37, 256, 136, 31);
+		lblPoblacio.setBounds(37, 307, 136, 31);
 		panel.add(lblPoblacio);
 
 		JLabel lblContrasenya_2 = new JLabel("CONTRASENYA");
 		lblContrasenya_2.setHorizontalAlignment(SwingConstants.LEFT);
 		lblContrasenya_2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblContrasenya_2.setBounds(37, 385, 199, 31);
+		lblContrasenya_2.setBounds(37, 504, 199, 31);
 		panel.add(lblContrasenya_2);
 
 		contrasenya = new JPasswordField();
 		contrasenya.setToolTipText("");
 		contrasenya.setColumns(10);
-		contrasenya.setBounds(37, 415, 407, 31);
+		contrasenya.setBounds(37, 546, 407, 31);
 		panel.add(contrasenya);
 
 		JLabel lblContrasenya_2_1 = new JLabel("REPETEIX CONTRASENYA");
 		lblContrasenya_2_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblContrasenya_2_1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblContrasenya_2_1.setBounds(37, 456, 274, 31);
+		lblContrasenya_2_1.setBounds(37, 601, 274, 31);
 		panel.add(lblContrasenya_2_1);
 
 		contrasenya2 = new JPasswordField();
 		contrasenya2.setToolTipText("");
 		contrasenya2.setColumns(10);
-		contrasenya2.setBounds(37, 497, 407, 31);
+		contrasenya2.setBounds(37, 643, 407, 31);
 		panel.add(contrasenya2);
-
-		JLabel Errors = new JLabel("");
-		Errors.setForeground(Color.RED);
-		Errors.setHorizontalAlignment(SwingConstants.LEFT);
-		Errors.setFont(new Font("Yu Gothic UI", Font.PLAIN, 15));
-		Errors.setBounds(37, 588, 407, 103);
-		panel.add(Errors);
 
 		JLabel lblContrasenya_2_2 = new JLabel("CORREU");
 		lblContrasenya_2_2.setHorizontalAlignment(SwingConstants.LEFT);
 		lblContrasenya_2_2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
-		lblContrasenya_2_2.setBounds(37, 324, 149, 31);
+		lblContrasenya_2_2.setBounds(37, 407, 149, 31);
 		panel.add(lblContrasenya_2_2);
+
+		errorNombre = new JLabel("");
+		errorNombre.setFont(new Font("Arial", Font.BOLD, 13));
+		errorNombre.setForeground(new Color(222, 31, 33));
+		errorNombre.setBounds(37, 117, 407, 14);
+		panel.add(errorNombre);
+
+		JLabel errorApellidos = new JLabel("");
+		errorApellidos.setForeground(new Color(222, 31, 33));
+		errorApellidos.setFont(new Font("Arial", Font.BOLD, 13));
+		errorApellidos.setBounds(37, 215, 407, 14);
+		panel.add(errorApellidos);
+
+		JLabel errorImatge = new JLabel("");
+		errorImatge.setForeground(new Color(222, 31, 33));
+		errorImatge.setFont(new Font("Arial", Font.BOLD, 13));
+		errorImatge.setBounds(37, 282, 407, 14);
+		panel.add(errorImatge);
+
+		JLabel errorPoblacio = new JLabel("");
+		errorPoblacio.setForeground(new Color(222, 31, 33));
+		errorPoblacio.setFont(new Font("Arial", Font.BOLD, 13));
+		errorPoblacio.setBounds(37, 391, 407, 14);
+		panel.add(errorPoblacio);
+
+		JLabel errorCorreo = new JLabel("");
+		errorCorreo.setForeground(new Color(222, 31, 33));
+		errorCorreo.setFont(new Font("Arial", Font.BOLD, 13));
+		errorCorreo.setBounds(37, 491, 407, 14);
+		panel.add(errorCorreo);
+
+		JLabel errorContrasena1 = new JLabel("");
+		errorContrasena1.setForeground(new Color(222, 31, 33));
+		errorContrasena1.setFont(new Font("Arial", Font.BOLD, 13));
+		errorContrasena1.setBounds(37, 588, 407, 14);
+		panel.add(errorContrasena1);
+
+		JLabel errorContrasena2 = new JLabel("");
+		errorContrasena2.setForeground(new Color(222, 31, 33));
+		errorContrasena2.setFont(new Font("Arial", Font.BOLD, 13));
+		errorContrasena2.setBounds(37, 685, 407, 14);
+		panel.add(errorContrasena2);
+
+		JLabel errorGeneral = new JLabel("");
+		errorGeneral.setFont(new Font("Arial", Font.BOLD, 15));
+		errorGeneral.setForeground(new Color(222, 31, 33));
+		errorGeneral.setHorizontalAlignment(SwingConstants.CENTER);
+		errorGeneral.setBounds(10, 40, 458, 14);
+		panel.add(errorGeneral);
+
+		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+				login.setVisible(true);
+				dispose();
+				setVisible(false);
+			}
+		});
+		btnLogin.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
+		btnLogin.setBounds(248, 710, 196, 38);
+		panel.add(btnLogin);
 		setResizable(false);
 
 		btnRegistrarse.addActionListener(e -> {
@@ -170,83 +225,109 @@ public class Registre extends JFrame {
 			String correo = correoField.getText();
 			String contra = String.valueOf(contrasenya.getPassword());
 			String contra2 = String.valueOf(contrasenya2.getPassword());
-			String error = "";
 
-			if (nombre.isEmpty()) {
-				textField.setBackground(new Color(255, 51, 51));
+			if (validarNombre(nombre)) {
+				errorNombre.setText("Nombre de registro Incorrecto");
 			} else {
-				textField.setBackground(null);
+				errorNombre.setText("");
 			}
 
-			if (apellidos.isEmpty()) {
-				apellidosField.setBackground(new Color(255, 51, 51));
+			if (validarNombre(apellidos)) {
+				errorApellidos.setText("Apellido de registro Incorrecto");
 			} else {
-				apellidosField.setBackground(null);
+				errorApellidos.setText("");
 			}
 
-			if (poblacio.isEmpty()) {
-				poblacioField.setBackground(new Color(255, 51, 51));
+			if (validarNombre(poblacio)) {
+				errorPoblacio.setText("Poblacion de registro Incorrecta");
+
 			} else {
-				poblacioField.setBackground(null);
+				errorPoblacio.setText("");
 			}
 
-			if (contra.isEmpty()) {
-				contrasenya.setBackground(new Color(255, 51, 51));
+			if (validarCorreo(correo)) {
+				errorCorreo.setText("Correo Incorrecto");
+
 			} else {
-				contrasenya.setBackground(null);
+				errorCorreo.setText("");
 			}
 
-			// Validar campos vacíos
-			if (nombre.isEmpty() || apellidos.isEmpty() || poblacio.isEmpty() || contra.isEmpty()
-					|| contra2.isEmpty()) {
-				error = "Todos los campos son obligatorios <br>";
-				System.out.println("Todos los campos son obligatorios");
+			if (validarContrasena(contra)) {
+				errorContrasena1.setText("Debe tener 8 caracteres una Mayuscula y un digito");
+			} else {
+				errorContrasena1.setText("");
 			}
 
-			if (contra.length() < 8 || !contra.matches(".*[A-Z].*") || !contra.matches(".*\\d.*")) {
-				error += "La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un dígito <br>";
-				System.out.println("La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un dígito");
-				contrasenya.setBackground(new Color(255, 51, 51));
+			if (nombre.isEmpty() || apellidos.isEmpty() || poblacio.isEmpty() || contra.isEmpty()) {
+				errorGeneral.setText("Todos los campos son obligatorios");
 			} else {
-				contrasenya.setBackground(null);
+				errorGeneral.setText("");
+
 			}
 
 			// Validar contraseñas iguales
 			if (!contra.equals(contra2)) {
-				error += "Las contraseñas no coinciden <br>";
-				System.out.println("Las contraseñas no coinciden");
-				contrasenya2.setBackground(new Color(255, 51, 51));
+				errorContrasena2.setText("Las contraseñas no coinciden");
 			} else {
-				contrasenya2.setBackground(null);
+				errorContrasena2.setText("");
 			}
 
 			if (fileChooser.getSelectedFile() == null) {
-				error += "No se ha seleccionado un archivo <br>";
-				System.out.println("No se ha seleccionado un archivo");
-				btnNewButton.setBackground(new Color(255, 51, 51));
+				errorImatge.setText("No se ha seleccionado ningun archivo");
 			} else {
-				btnNewButton.setBackground(null);
-
+				errorImatge.setText("");
 			}
-			Errors.setText("<html>" + error + "</html>");
 
-			if (error == "") {
+			if (errorNombre.getText().equals("") && errorApellidos.getText().equals("")
+					&& errorImatge.getText().equals("") && errorPoblacio.getText().equals("")
+					&& errorCorreo.getText().equals("") && errorContrasena1.getText().equals("")
+					&& errorContrasena2.getText().equals("")) {
 				// Lanzar funcion para escribir todo en la base de datos
-				try {					
-					Usuario usuarioRegistrado = new Usuario(nombre, apellidos, image, poblacio, correo, contra);
-					if (BDUtils.registrarUsuario(usuarioRegistrado)) {						
-						menuPrincipal menu = new menuPrincipal(usuarioRegistrado);
-						menu.setVisible(true);
-						setVisible(false);
-						dispose();
-					}else {
-						System.out.println("Error");
+				if (!BDUtils.usuarioExisteRegistro(correo)) {
+					try {
+						Usuario usuarioRegistrado = new Usuario(nombre, apellidos, image, poblacio, correo, contra);
+						if (BDUtils.registrarUsuario(usuarioRegistrado)) {
+							menuPrincipal menu = new menuPrincipal(usuarioRegistrado);
+							menu.setVisible(true);
+							setVisible(false);
+							dispose();
+						} else {
+							System.out.println("Error");
+						}
+					} catch (Exception e2) {
 					}
-				} catch (Exception e2) {
+				}else {
+					errorGeneral.setText("El usuario ya existe");
 				}
 			}
 
 		});
 
+		setLocationRelativeTo(null);
+
+	}
+
+	public boolean validarNombre(String nombre) {
+		if (!nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\\\\s]+$")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean validarCorreo(String correo) {
+		if (!correo.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean validarContrasena(String contrasena) {
+		if (!contrasena.matches("^(?=.*[A-Z])(?=.*\\d).{8,}$")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

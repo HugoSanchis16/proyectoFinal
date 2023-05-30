@@ -2,7 +2,6 @@ package com.proyectoFinal.grupo2.Juegos;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -19,40 +18,13 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatArcDarkIJTheme;
 
 public class JocDeLaVida extends JFrame implements ActionListener {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
-	public static void main(String[] args) {
-
-		try {
-			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SwingUtilities.invokeLater(() -> {
-						JocDeLaVida juego = new JocDeLaVida();
-						juego.mostrarMenutamaño();
-					});
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-	}
 
 	private static final int tamaño_TABLERO_PEQUENO = 40;
 	private static final int tamaño_TABLERO_MEDIANO = 60;

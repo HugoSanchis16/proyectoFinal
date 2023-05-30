@@ -48,7 +48,6 @@ public class BD {
 		 */
 		
 		boolean contieneIPClase = false;
-		String ip = null;
 //		try {
 //			ip = Inet4Address.getLocalHost().getHostAddress();
 //		} catch (UnknownHostException e) {

@@ -21,6 +21,9 @@ import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
+	/**
+	 * 
+	 */
 	private JPanel contentPane;
 	private JTextField textFieldCorreo;
 	private JPasswordField contrasenya;
@@ -96,7 +99,7 @@ public class Login extends JFrame {
 		contrasenya.setBounds(161, 278, 407, 38);
 		contentPane.add(contrasenya);
 
-		JLabel lblContrasenya = new JLabel("CONTRASENYA");
+		JLabel lblContrasenya = new JLabel("Contrasenya");
 		lblContrasenya.setHorizontalAlignment(SwingConstants.LEFT);
 		lblContrasenya.setFont(new Font("Yu Gothic UI", Font.PLAIN, 23));
 		lblContrasenya.setBounds(161, 232, 187, 45);
@@ -111,8 +114,8 @@ public class Login extends JFrame {
 		JLabel error = new JLabel("");
 		error.setHorizontalAlignment(SwingConstants.CENTER);
 		error.setFont(new Font("Arial", Font.BOLD, 15));
-		error.setForeground(new Color(255, 0, 0));
-		error.setBounds(39, 421, 319, 14);
+		error.setForeground(new Color(222, 31, 33));
+		error.setBounds(10, 414, 457, 14);
 		panel.add(error);
 
 		btnNewButton.addActionListener(new ActionListener() {
@@ -131,5 +134,6 @@ public class Login extends JFrame {
 		});
 //		
 		setResizable(false);
+		setLocationRelativeTo(null);
 	}
 }

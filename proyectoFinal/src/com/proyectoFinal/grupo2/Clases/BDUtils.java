@@ -8,12 +8,38 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.proyectoFinal.grupo2.Clases.Usuario;
-
 public class BDUtils {
 	private static String urlBaseDades = "jdbc:mysql://" + BD.getHost() + ":3306/1daw02_pro";
 	private static String usuariBD = BD.getUsuario();
 	private static String contrasenyaBD = BD.getContrasena();
+
+	public static boolean usuarioExisteRegistro(String email) {
+		/**
+		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
+		 * de la contraseña
+		 */
+
+		// Variables
+
+		try {
+			elegirClaseBD();
+
+			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+
+			Statement s = c.createStatement();
+			ResultSet r = s.executeQuery("SELECT * FROM `usuarios` WHERE correo='" + email + "'");
+
+			while (r.next()) {
+				if ((r.getString("correo").equals(email))) {
+					c.close();
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	public static boolean usuarioExiste(String email, String contrasena) {
 		/**
@@ -68,15 +94,6 @@ public class BDUtils {
 					return usuario;
 				}
 			}
-
-//			while (r.next()) {
-//				System.out.println("Total Alumnes: "+r.getInt("TOTAL"));
-//			}
-//			
-//			s = c.createStatement();
-//			r = s.executeQuery("SELECT * FROM alumne");
-//			
-
 			// Tancar la connexió
 
 		} catch (SQLException e) {
@@ -117,33 +134,33 @@ public class BDUtils {
 	}
 
 	public static ArrayList<HashMap<String, String>> recuperarPartidasBuscaMinas(String email) {
-	    ArrayList<HashMap<String, String>> partidas = new ArrayList<>();
+		ArrayList<HashMap<String, String>> partidas = new ArrayList<>();
 
-		 try {
-		        elegirClaseBD();
+		try {
+			elegirClaseBD();
 
-		        Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
 
-		        Statement s = c.createStatement();
-		        ResultSet r = s.executeQuery("SELECT * FROM `buscaminas` WHERE usuario='" + email + "'");
+			Statement s = c.createStatement();
+			ResultSet r = s.executeQuery("SELECT * FROM `buscaminas` WHERE usuario='" + email + "'");
 
-		        while (r.next()) {
-		        	HashMap<String, String> temp = new HashMap<>();
-		            temp.put("id_juego", r.getString("id_juego"));
-		            temp.put("email", r.getString("usuario"));
-		            temp.put("matriz", r.getString("matriz"));
-		            temp.put("nombre_partida", r.getString("nombre_partida"));
+			while (r.next()) {
+				HashMap<String, String> temp = new HashMap<>();
+				temp.put("id_juego", r.getString("id_juego"));
+				temp.put("email", r.getString("usuario"));
+				temp.put("matriz", r.getString("matriz"));
+				temp.put("nombre_partida", r.getString("nombre_partida"));
 
-		            partidas.add(temp);
-		        }
+				partidas.add(temp);
+			}
 
-		        c.close();
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
-
-		    return partidas;
+			c.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
+		return partidas;
+	}
 
 	// Crealo así
 //		Usuario usuariotemp = new Usuario("", "", "", "", "", "");

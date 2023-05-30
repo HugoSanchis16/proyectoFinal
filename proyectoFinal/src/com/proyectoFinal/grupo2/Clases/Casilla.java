@@ -3,6 +3,9 @@ package com.proyectoFinal.grupo2.Clases;
 import java.io.Serializable;
 
 public class Casilla implements Serializable {
+	/**
+	 * 
+	 */
 	private int posFila;
 	private int posColumna;
 	private boolean mina;

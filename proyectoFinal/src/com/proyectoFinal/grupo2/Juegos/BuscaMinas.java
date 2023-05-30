@@ -1,6 +1,7 @@
 package com.proyectoFinal.grupo2.Juegos;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -10,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import com.proyectoFinal.grupo2.Clases.BDUtils;
@@ -18,6 +20,7 @@ import com.proyectoFinal.grupo2.Clases.TableroBuscaminas;
 import com.proyectoFinal.grupo2.Clases.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -26,6 +29,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,6 +42,9 @@ public class BuscaMinas extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	boolean salir = false;
 	final private static String[] niveles = { "Fácil", "Medio", "Difícil", "Cargar Partida" };
 	private String[] opcionesTrasAcabar = { "Volver a Jugar", "Salir" };
@@ -55,31 +63,11 @@ public class BuscaMinas extends JFrame {
 	TableroBuscaminas tableroBuscaminas;
 	public Usuario usuarioBuscaMinas;
 
-//	public static void main(String[] args) {
-
-//		try {
-//			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
-//
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//
-//					BuscaMinas frame = new BuscaMinas();
-//
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
 	/**
 	 * Create the frame.
 	 */
 	public BuscaMinas(Usuario usuario) {
+
 		usuarioBuscaMinas = usuario;
 		String estiloCSS = "<html><body><p style='font-size: 16px;'>Selecciona un nivel</p></body></html>";
 		JLabel label = new JLabel(estiloCSS);
@@ -87,7 +75,6 @@ public class BuscaMinas extends JFrame {
 		int seleccion = JOptionPane.showOptionDialog(null, label, "Buscaminas", JOptionPane.DEFAULT_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, niveles, niveles[0]);
 		if (seleccion != -1) {
-			setVisible(true);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -115,15 +102,60 @@ public class BuscaMinas extends JFrame {
 			botonGuardar.setFocusable(false);
 			botonGuardar.setHorizontalAlignment(SwingConstants.CENTER);
 			botonGuardar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (BDUtils.guardarPartidaBuscaMinas(usuario.getCorreoElectronico(), serializarTablero(),
-							JOptionPane.showInputDialog("Introduce un nombre:"))) {
-						JOptionPane.showMessageDialog(null, "Partida guardada correctamente.", "Éxito",
-								JOptionPane.INFORMATION_MESSAGE);
-						dispose();
-					}
+			    public void actionPerformed(ActionEvent e) {
+			        JPanel panel = new JPanel();
+			        JLabel label = new JLabel("<html><body><p style='font-size: 15px; margin: 10px 20px;'>Introduce un nombre:</p></body></html>");
+			        JTextField textField = new JTextField(10);
+			        panel.add(label);
+			        panel.add(textField);
 
-				}
+			        JButton buttonGuardar = new JButton("Guardar");
+			        buttonGuardar.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrar el botón
+			        int buttonMargin = 7;
+			        buttonGuardar.setMargin(new Insets(buttonMargin, buttonMargin, buttonMargin, buttonMargin));
+
+
+			        // Crear el diálogo sin barra de título
+			        JDialog dialog = new JDialog((JFrame) null, "Guardar partida", true);
+			        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			        dialog.setResizable(false);
+
+			        dialog.addWindowListener(new WindowAdapter() {
+			            @Override
+			            public void windowClosing(WindowEvent e) {
+			                dialog.dispose();
+			            }
+			        });
+
+			        // Cambiar el layout del panel
+			        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+			        dialog.getContentPane().setLayout(new BorderLayout());
+			        dialog.getContentPane().add(panel, BorderLayout.CENTER);
+			        dialog.getContentPane().add(buttonGuardar, BorderLayout.SOUTH);
+
+			        buttonGuardar.addActionListener(new ActionListener() {
+			            @Override
+			            public void actionPerformed(ActionEvent e) {
+			                String nombrePartida = textField.getText();
+
+			                if (!nombrePartida.isEmpty() && !nombrePartida.isBlank()) {
+			                    if (BDUtils.guardarPartidaBuscaMinas(usuario.getCorreoElectronico(),
+			                            serializarTablero(), nombrePartida)) {
+			                        JOptionPane.showMessageDialog(null, "Partida guardada correctamente.", "Éxito",
+			                                JOptionPane.INFORMATION_MESSAGE);
+			                        dispose();
+			                        dialog.dispose();
+			                    }
+			                }
+			            }
+			        });
+
+			        dialog.pack();
+			        dialog.setLocationRelativeTo(null);
+
+			        dialog.setVisible(true);
+			    }
 			});
 			panel.add(botonGuardar);
 
@@ -150,6 +182,7 @@ public class BuscaMinas extends JFrame {
 				this.setTitle("BuscaMinas - Facil");
 				crearBotones(tamanoTauler);
 				crearTablero();
+				setVisible(true);
 				break;
 			case 1:
 				tamanoTauler = 15;
@@ -157,6 +190,7 @@ public class BuscaMinas extends JFrame {
 				this.setTitle("BuscaMinas - Medio");
 				crearBotones(tamanoTauler);
 				crearTablero();
+				setVisible(true);
 				break;
 			case 2:
 				tamanoTauler = 20;
@@ -164,6 +198,7 @@ public class BuscaMinas extends JFrame {
 				this.setTitle("BuscaMinas - Dificil");
 				crearBotones(tamanoTauler);
 				crearTablero();
+				setVisible(true);
 				break;
 			case 3:
 				tamanoTauler = 1;
@@ -172,6 +207,7 @@ public class BuscaMinas extends JFrame {
 				crearTablero();
 				setVisible(false);
 				mostrarPartidas(usuarioBuscaMinas.getCorreoElectronico());
+				break;
 			}
 			JPanel panelInformacion = new JPanel();
 			contentPane.add(panelInformacion, BorderLayout.NORTH);
@@ -220,7 +256,6 @@ public class BuscaMinas extends JFrame {
 			labelBanderasPuestas.setHorizontalAlignment(SwingConstants.CENTER);
 			panelLabels2.add(labelBanderasPuestas);
 			panelInformacion.add(panelLabels2);
-
 		} else {
 			System.out.println("cerrar");
 			setVisible(false);
@@ -432,7 +467,8 @@ public class BuscaMinas extends JFrame {
 			JPanel panelPrincipal = new JPanel();
 			panelPrincipal.setLayout(new BorderLayout());
 
-			JLabel label = new JLabel("<html><body><p style='font-size: 15px;'>¡Elige tu partida!</p></body></html>");
+			JLabel label = new JLabel(
+					"<html><body><p style='font-size: 15px; margin: auto 20px;'>¡Elige tu partida!</p></body></html>");
 			label.setHorizontalAlignment(SwingConstants.CENTER);
 			label.setBorder(new EmptyBorder(10, 0, 15, 0));
 			panelPrincipal.add(label, BorderLayout.NORTH);
@@ -472,13 +508,14 @@ public class BuscaMinas extends JFrame {
 			dialogo.getContentPane().add(panelPrincipal);
 			dialogo.pack();
 			dialogo.setLocationRelativeTo(null);
+			dialogo.setModal(true);
 			dialogo.setVisible(true);
+
 		} else {
 			JDialog noPartidasDialogo = new JDialog();
 			noPartidasDialogo.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			noPartidasDialogo.setTitle("Aviso");
 			noPartidasDialogo.setModal(true);
-
 			JPanel panelPrincipal = new JPanel();
 			panelPrincipal.setLayout(new BorderLayout());
 
@@ -499,8 +536,8 @@ public class BuscaMinas extends JFrame {
 			panelPrincipal.add(panelBoton, BorderLayout.SOUTH);
 
 			noPartidasDialogo.getContentPane().add(panelPrincipal);
-			noPartidasDialogo.setPreferredSize(new Dimension(300, 150));
 			noPartidasDialogo.pack();
+			noPartidasDialogo.setPreferredSize(new Dimension(300, 300));
 			noPartidasDialogo.setLocationRelativeTo(null);
 			noPartidasDialogo.setVisible(true);
 		}
