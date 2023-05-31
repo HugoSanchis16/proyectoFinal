@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -15,7 +19,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import com.proyectoFinal.grupo2.Clases.*;
+
+import com.proyectoFinal.grupo2.Clases.BDUtils;
+import com.proyectoFinal.grupo2.Clases.Usuario;
 
 public class Registre extends JFrame {
 
@@ -221,6 +227,41 @@ public class Registre extends JFrame {
 			String nombre = textField.getText();
 			String apellidos = apellidosField.getText();
 			String image = "a";
+			//Aqui procesamos la imagen del filechooser
+			String Ruta = fileChooser.getSelectedFile().getAbsolutePath();
+			String Ruta2 = ""+Ruta;
+			System.out.println(Ruta2);
+			String[] rutaSeparado =  Ruta2.split("\\.");
+			System.out.println(rutaSeparado.toString());
+			System.out.print(rutaSeparado.length);
+			
+			String formato = rutaSeparado[rutaSeparado.length-1];
+			byte[] fileData = null;
+
+			if(formato.equals("jpg")||formato.equals("jpeg")||formato.equals("png")) {
+				File file = new File(Ruta);
+				
+				fileData = new byte[(int) file.length()];
+
+			try (FileInputStream fis = new FileInputStream(file);
+			     BufferedInputStream bis = new BufferedInputStream(fis)) {
+			    bis.read(fileData);
+			} catch (IOException es) {
+			    es.printStackTrace();
+			}
+				
+				
+				
+				
+			}
+			else {
+				System.out.println("Archivo seleccionado incompatible");
+			}
+			
+			
+			
+			
+			
 			String poblacio = poblacioField.getText();
 			String correo = correoField.getText();
 			String contra = String.valueOf(contrasenya.getPassword());
@@ -285,7 +326,7 @@ public class Registre extends JFrame {
 				// Lanzar funcion para escribir todo en la base de datos
 				if (!BDUtils.usuarioExisteRegistro(correo)) {
 					try {
-						Usuario usuarioRegistrado = new Usuario(nombre, apellidos, image, poblacio, correo, contra);
+						Usuario usuarioRegistrado = new Usuario(nombre, apellidos, fileData, poblacio, correo, contra);
 						if (BDUtils.registrarUsuario(usuarioRegistrado)) {
 							menuPrincipal menu = new menuPrincipal(usuarioRegistrado);
 							menu.setVisible(true);

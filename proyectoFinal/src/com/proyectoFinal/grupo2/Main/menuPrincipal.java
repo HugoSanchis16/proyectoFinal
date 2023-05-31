@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import com.proyectoFinal.grupo2.Clases.BDUtils;
+import com.proyectoFinal.grupo2.Clases.TableroBuscaminas;
 import com.proyectoFinal.grupo2.Clases.Usuario;
 import com.proyectoFinal.grupo2.Clases.VerPerfil;
 import com.proyectoFinal.grupo2.Juegos.*;
@@ -140,11 +141,12 @@ public class menuPrincipal extends JFrame {
 					int seleccion = JOptionPane.showOptionDialog(null, label, "Buscaminas", JOptionPane.DEFAULT_OPTION,
 							JOptionPane.PLAIN_MESSAGE, null, opcionesDialogo, opcionesDialogo[0]);
 					if (seleccion == 0) {
-						BDUtils.guardarPartidaBuscaMinas(usuario.getCorreoElectronico(),
-								ventanaBuscaMinas.serializarTablero(),
-								JOptionPane.showInputDialog("Introduce un nombre para la partida:"));
+						ventanaBuscaMinas.mostrarDialogoNombrePartida();
+
 					}
 					ventanaBuscaMinas.dispose();
+				}
+				if (ventanaJuegoDeLaVida != null && ventanaJuegoDeLaVida.isVisible()) {
 					ventanaJuegoDeLaVida.dispose();
 				}
 				dispose();
@@ -152,10 +154,9 @@ public class menuPrincipal extends JFrame {
 				login.setVisible(true);
 			}
 		});
-		botonCerrarSesion.setOpaque(false);
 		botonCerrarSesion.setBorderPainted(false);
 		botonCerrarSesion.setFocusPainted(false);
-		botonCerrarSesion.setContentAreaFilled(false);
+		botonCerrarSesion.setContentAreaFilled(true);
 		botonCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonCerrarSesion.setForeground(Color.WHITE);
 		botonCerrarSesion.setBackground(new Color(153, 0, 0)); // Cambia el color de fondo a rojo

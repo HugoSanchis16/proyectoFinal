@@ -87,7 +87,7 @@ public class BDUtils {
 			while (r.next()) {
 				if ((r.getString("correo").equals(email)) && (r.getString("contrasena").equals(contrasena))) {
 					Usuario usuario = new Usuario(r.getInt("id"), r.getString("nombre"), r.getString("apellidos"),
-							r.getString("imagen"), r.getString("poblacion"), r.getString("correo"),
+							r.getBytes("imagen"), r.getString("poblacion"), r.getString("correo"),
 							r.getString("contrasena"));
 
 					c.close();
@@ -103,7 +103,8 @@ public class BDUtils {
 		return null;
 	}
 
-	public static boolean guardarPartidaBuscaMinas(String email, String base64Partida, String nombrePartida) {
+	public static boolean guardarPartidaBuscaMinas(String email, String base64Partida, String nombrePartida,
+			int segundos, String dificultad) {
 		/**
 		 * Para comprobar hay que pasarle al metodo el email entero y un string del hash
 		 * de la contraseña
@@ -117,8 +118,8 @@ public class BDUtils {
 			// Enviar una sentència SQL per recuperar els clients
 			Statement s = c.createStatement();
 			int r = s.executeUpdate(
-					"INSERT INTO `buscaminas` (`id_juego`, `usuario`, `matriz`, `nombre_partida`) VALUES (NULL, '"
-							+ email + "', '" + base64Partida + "', '" + nombrePartida + "')");
+					"INSERT INTO `buscaminas` (`id_juego`, `usuario`, `matriz`, `nombre_partida` , `tiempo` , `dificultad`) VALUES (NULL, '"
+							+ email + "', '" + base64Partida + "', '" + nombrePartida + "', '" + segundos + "', '" + dificultad + "')");
 
 			if (r > 0) {
 				// Se ha guardado correctamente la partida
@@ -131,6 +132,35 @@ public class BDUtils {
 		}
 		return false;
 
+	}
+	
+	public static ArrayList<HashMap<String, String>> obtenerMejorPartidaPorUsuario(String email) {
+	    ArrayList<HashMap<String, String>> partidas = new ArrayList<>();
+
+	    try {
+	        elegirClaseBD();
+
+	        Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+
+	        Statement s = c.createStatement();
+	        ResultSet r = s.executeQuery("SELECT * FROM `buscaminas` b " +
+	                "WHERE b.usuario='" + email + "' " +
+	                "AND b.tiempo = (SELECT MIN(tiempo) FROM `buscaminas` WHERE usuario='" + email + "')");
+
+	        while (r.next()) {
+	            HashMap<String, String> temp = new HashMap<>();
+	            temp.put("email", r.getString("usuario"));
+	            temp.put("tiempo", r.getString("nombre_partida"));
+
+	            partidas.add(temp);
+	        }
+
+	        c.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return partidas;
 	}
 
 	public static ArrayList<HashMap<String, String>> recuperarPartidasBuscaMinas(String email) {
