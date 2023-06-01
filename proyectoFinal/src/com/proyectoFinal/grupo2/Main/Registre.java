@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,7 +60,7 @@ public class Registre extends JFrame {
 		nomUsuari.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JButton btnRegistrarse = new JButton("Registrarse");
-		btnRegistrarse.setBounds(37, 710, 196, 38);
+		btnRegistrarse.setBounds(248, 710, 196, 38);
 		panel.add(btnRegistrarse);
 		btnRegistrarse.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 
@@ -81,6 +82,12 @@ public class Registre extends JFrame {
 		correoField.setBounds(37, 449, 407, 31);
 		panel.add(correoField);
 
+		JLabel errorImatge = new JLabel("");
+		errorImatge.setForeground(new Color(222, 31, 33));
+		errorImatge.setFont(new Font("Arial", Font.BOLD, 13));
+		errorImatge.setBounds(37, 282, 407, 14);
+		panel.add(errorImatge);
+
 		JButton btnNewButton = new JButton("Insereix");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -89,12 +96,21 @@ public class Registre extends JFrame {
 				int result = fileChooser.showOpenDialog(null);
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = fileChooser.getSelectedFile();
-					System.out.println("Archivo seleccionado: " + selectedFile.getName());
+					// Verificar la extensión del archivo seleccionado
+					String extension = getExtension(selectedFile);
+					if (!isValidExtension(extension)) {
+						errorImatge.setText("Formato de imagen incorrecto");
+						return;
+					} else if (fileChooser.getSelectedFile() == null) {
+						errorImatge.setText("Formato de imagen incorrecto");
+						return;
+					} else {
+						errorImatge.setText("");
+					}
 				} else if (result == JFileChooser.CANCEL_OPTION) {
-					System.out.println("Selección de archivos cancelada");
+					// Acciones cuando se cancela la selección del archivo
 				}
 			}
-
 		});
 		btnNewButton.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
 		btnNewButton.setBounds(139, 240, 305, 31);
@@ -172,12 +188,6 @@ public class Registre extends JFrame {
 		errorApellidos.setBounds(37, 215, 407, 14);
 		panel.add(errorApellidos);
 
-		JLabel errorImatge = new JLabel("");
-		errorImatge.setForeground(new Color(222, 31, 33));
-		errorImatge.setFont(new Font("Arial", Font.BOLD, 13));
-		errorImatge.setBounds(37, 282, 407, 14);
-		panel.add(errorImatge);
-
 		JLabel errorPoblacio = new JLabel("");
 		errorPoblacio.setForeground(new Color(222, 31, 33));
 		errorPoblacio.setFont(new Font("Arial", Font.BOLD, 13));
@@ -219,49 +229,32 @@ public class Registre extends JFrame {
 			}
 		});
 		btnLogin.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
-		btnLogin.setBounds(248, 710, 196, 38);
+		btnLogin.setBounds(37, 710, 196, 38);
 		panel.add(btnLogin);
 		setResizable(false);
 
 		btnRegistrarse.addActionListener(e -> {
 			String nombre = textField.getText();
 			String apellidos = apellidosField.getText();
-			String image = "a";
-			//Aqui procesamos la imagen del filechooser
-			String Ruta = fileChooser.getSelectedFile().getAbsolutePath();
-			String Ruta2 = ""+Ruta;
-			System.out.println(Ruta2);
-			String[] rutaSeparado =  Ruta2.split("\\.");
-			System.out.println(rutaSeparado.toString());
-			System.out.print(rutaSeparado.length);
-			
-			String formato = rutaSeparado[rutaSeparado.length-1];
-			byte[] fileData = null;
 
-			if(formato.equals("jpg")||formato.equals("jpeg")||formato.equals("png")) {
-				File file = new File(Ruta);
-				
-				fileData = new byte[(int) file.length()];
+			File selectedFile = fileChooser.getSelectedFile();
+			File imageFile = new File(selectedFile.getAbsolutePath());
 
-			try (FileInputStream fis = new FileInputStream(file);
-			     BufferedInputStream bis = new BufferedInputStream(fis)) {
-			    bis.read(fileData);
-			} catch (IOException es) {
-			    es.printStackTrace();
+			byte[] blobData = null;
+			if (selectedFile != null) {
+			    try (FileInputStream fis = new FileInputStream(selectedFile);
+			            ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+			        byte[] buffer = new byte[4096];
+			        int bytesRead;
+			        while ((bytesRead = fis.read(buffer)) != -1) {
+			            bos.write(buffer, 0, bytesRead);
+			        }
+			        blobData = bos.toByteArray();
+			    } catch (IOException e1) {
+			        e1.printStackTrace();
+			    }
 			}
-				
-				
-				
-				
-			}
-			else {
-				System.out.println("Archivo seleccionado incompatible");
-			}
-			
-			
-			
-			
-			
+
 			String poblacio = poblacioField.getText();
 			String correo = correoField.getText();
 			String contra = String.valueOf(contrasenya.getPassword());
@@ -313,12 +306,6 @@ public class Registre extends JFrame {
 				errorContrasena2.setText("");
 			}
 
-			if (fileChooser.getSelectedFile() == null) {
-				errorImatge.setText("No se ha seleccionado ningun archivo");
-			} else {
-				errorImatge.setText("");
-			}
-
 			if (errorNombre.getText().equals("") && errorApellidos.getText().equals("")
 					&& errorImatge.getText().equals("") && errorPoblacio.getText().equals("")
 					&& errorCorreo.getText().equals("") && errorContrasena1.getText().equals("")
@@ -326,7 +313,7 @@ public class Registre extends JFrame {
 				// Lanzar funcion para escribir todo en la base de datos
 				if (!BDUtils.usuarioExisteRegistro(correo)) {
 					try {
-						Usuario usuarioRegistrado = new Usuario(nombre, apellidos, fileData, poblacio, correo, contra);
+						Usuario usuarioRegistrado = new Usuario(nombre, apellidos, blobData, poblacio, correo, contra);
 						if (BDUtils.registrarUsuario(usuarioRegistrado)) {
 							menuPrincipal menu = new menuPrincipal(usuarioRegistrado);
 							menu.setVisible(true);
@@ -337,7 +324,7 @@ public class Registre extends JFrame {
 						}
 					} catch (Exception e2) {
 					}
-				}else {
+				} else {
 					errorGeneral.setText("El usuario ya existe");
 				}
 			}
@@ -346,6 +333,25 @@ public class Registre extends JFrame {
 
 		setLocationRelativeTo(null);
 
+	}
+
+	private String getExtension(File file) {
+		String name = file.getName();
+		int lastDotIndex = name.lastIndexOf(".");
+		if (lastDotIndex != -1 && lastDotIndex < name.length() - 1) {
+			return name.substring(lastDotIndex + 1).toLowerCase();
+		}
+		return "";
+	}
+
+	private boolean isValidExtension(String extension) {
+		String[] validExtensions = { "jpg", "jpeg", "png" };
+		for (String validExtension : validExtensions) {
+			if (validExtension.equals(extension)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean validarNombre(String nombre) {

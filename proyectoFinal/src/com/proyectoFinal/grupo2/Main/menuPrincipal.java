@@ -3,10 +3,9 @@ package com.proyectoFinal.grupo2.Main;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import com.proyectoFinal.grupo2.Clases.BDUtils;
-import com.proyectoFinal.grupo2.Clases.TableroBuscaminas;
 import com.proyectoFinal.grupo2.Clases.Usuario;
-import com.proyectoFinal.grupo2.Clases.VerPerfil;
 import com.proyectoFinal.grupo2.Juegos.*;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -33,6 +32,7 @@ public class menuPrincipal extends JFrame {
 	private JPanel contentPane;
 	private BuscaMinas ventanaBuscaMinas;
 	private JocDeLaVida ventanaJuegoDeLaVida;
+	private RankingBuscaMinas ventanaJuegoRanking;
 	private String[] opcionesDialogo = { "Si", "No" };
 
 	/**
@@ -49,22 +49,19 @@ public class menuPrincipal extends JFrame {
 		JMenu mnNewMenu = new JMenu("Ajustes");
 		menuAjustes.add(mnNewMenu);
 
-		JMenuItem mntmNewMenuItem = new JMenuItem("Eliminar cuenta");
-		ImageIcon imagen = new ImageIcon(menuPrincipal.class.getResource("./Imagenes/cruzRoja.png"));
-		Image imageRedimensionada = imagen.getImage().getScaledInstance(25, -1, Image.SCALE_SMOOTH);
-		ImageIcon fotoRedimensionada = new ImageIcon(imageRedimensionada);
 		JMenuItem verperfil = new JMenuItem("Ver Perfil");
 		verperfil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VerPerfil verperfil = new VerPerfil(usuario);
+				VerPerfil verperfil = new VerPerfil(usuario, menuPrincipal.this);
 				verperfil.setVisible(true);
+
 			}
 		});
+
 		ImageIcon imagenPerfil = new ImageIcon(menuPrincipal.class.getResource("./Imagenes/perfil.png"));
 		Image imageRedimensionada2 = imagenPerfil.getImage().getScaledInstance(25, -1, Image.SCALE_SMOOTH);
 		ImageIcon fotoRedimensionada2 = new ImageIcon(imageRedimensionada2);
-		mntmNewMenuItem.setIcon(fotoRedimensionada);
-		mnNewMenu.add(mntmNewMenuItem);
+
 		verperfil.setIcon(fotoRedimensionada2);
 		mnNewMenu.add(verperfil);
 		contentPane = new JPanel();
@@ -149,9 +146,9 @@ public class menuPrincipal extends JFrame {
 				if (ventanaJuegoDeLaVida != null && ventanaJuegoDeLaVida.isVisible()) {
 					ventanaJuegoDeLaVida.dispose();
 				}
-				dispose();
 				Login login = new Login();
 				login.setVisible(true);
+				dispose();
 			}
 		});
 		botonCerrarSesion.setBorderPainted(false);
@@ -163,6 +160,7 @@ public class menuPrincipal extends JFrame {
 		botonCerrarSesion.setFont(new Font("Arial", Font.BOLD, 15));
 		panelBotones.add(botonCerrarSesion);
 		setLocationRelativeTo(null);
+
 	}
 
 }
