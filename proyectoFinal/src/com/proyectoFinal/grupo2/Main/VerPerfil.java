@@ -23,16 +23,6 @@ public class VerPerfil extends JFrame {
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
-		JButton atrasButton = new JButton("Atrás");
-		atrasButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		atrasButton.setFont(new Font("Arial", Font.BOLD, 15));
-		atrasButton.setBounds(248, 509, 228, 41);
-		panel.add(atrasButton);
-
 		JButton botonEliminar = new JButton("Eliminar Cuenta");
 		botonEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -63,12 +53,12 @@ public class VerPerfil extends JFrame {
 		botonEliminar.setForeground(new Color(255, 255, 255));
 		botonEliminar.setFont(new Font("Arial", Font.BOLD, 15));
 		botonEliminar.setBackground(new Color(191, 0, 0));
-		botonEliminar.setBounds(10, 509, 228, 41);
+		botonEliminar.setBounds(22, 510, 194, 41);
 		panel.add(botonEliminar);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(90, 98, 167));
-		panel_2.setBounds(10, 11, 464, 539);
+		panel_2.setBackground(new Color(88, 94, 170));
+		panel_2.setBounds(10, 11, 476, 552);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 
@@ -138,6 +128,16 @@ public class VerPerfil extends JFrame {
 		panel_1.add(poblacioLabel);
 		poblacioLabel.setFont(new Font("Arial", Font.BOLD, 17));
 		poblacioLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+				JButton atrasButton = new JButton("Atrás");
+				atrasButton.setBounds(265, 499, 189, 41);
+				panel_2.add(atrasButton);
+				atrasButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				atrasButton.setFont(new Font("Arial", Font.BOLD, 15));
 	}
 
 	public boolean isUsuarioEliminadoCorrecto() {

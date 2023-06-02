@@ -32,7 +32,7 @@ public class menuPrincipal extends JFrame {
 	private JPanel contentPane;
 	private BuscaMinas ventanaBuscaMinas;
 	private JocDeLaVida ventanaJuegoDeLaVida;
-	private RankingBuscaMinas ventanaJuegoRanking;
+	private VerPerfil verPerfil;
 	private String[] opcionesDialogo = { "Si", "No" };
 
 	/**
@@ -52,9 +52,13 @@ public class menuPrincipal extends JFrame {
 		JMenuItem verperfil = new JMenuItem("Ver Perfil");
 		verperfil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VerPerfil verperfil = new VerPerfil(usuario, menuPrincipal.this);
-				verperfil.setVisible(true);
+				if (verPerfil == null || !verPerfil.isVisible()) {
+					verPerfil = new VerPerfil(usuario, menuPrincipal.this);
+					verPerfil.setVisible(true);
+				}else {
+					verPerfil.setVisible(true);
 
+				}
 			}
 		});
 
