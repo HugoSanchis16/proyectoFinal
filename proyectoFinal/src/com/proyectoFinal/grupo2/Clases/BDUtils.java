@@ -126,6 +126,67 @@ public class BDUtils {
 
 	}
 	
+	public static ArrayList<HashMap<String, String>> recuperarPartidasPixelArt(String nombre) {
+		ArrayList<HashMap<String, String>> partidas = new ArrayList<HashMap<String, String>>();
+		HashMap<String, String> temp = new HashMap<String, String>();
+		try {
+			elegirClaseBD();
+			
+			
+			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+			
+			Statement s = c.createStatement();
+			ResultSet r = s.executeQuery("SELECT * FROM `pixelart` WHERE usuario='" + nombre + "'");
+			
+			while (r.next()) {
+				temp.put("usuario", r.getString("usuario"));
+				temp.put("nombre", r.getString("nombre"));
+				temp.put("matriz", r.getString("matriz"));
+				temp.put("fecha", r.getString("fecha"));
+				
+				partidas.add(temp);
+				System.out.println("sdfdg" + temp.toString());
+				
+				temp.clear();
+			}
+			
+			c.close();
+//			while (r.next()) {
+//				System.out.println("Total Alumnes: "+r.getInt("TOTAL"));
+//			}
+//			
+//			s = c.createStatement();
+//			r = s.executeQuery("SELECT * FROM alumne");
+//			
+			
+			// Tancar la connexió
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return partidas;
+		
+	}
+	
+	public static void guardarPartidaPixelArt(String nombre, String nombrePartida, String base64Partida) {
+		try {
+			elegirClaseBD();
+
+			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
+
+			// Enviar una sentència SQL per recuperar els clients
+			Statement s = c.createStatement();
+			int r = s.executeUpdate(
+					"INSERT INTO `pixelart` (`id`, `usuario`, `nombre`, `fecha`, `matriz`) VALUES (NULL, '" + nombre + "', '" + nombrePartida + "', NULL, '" + base64Partida + "')");
+
+			// Tancar la connexió
+			c.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	// Crealo así
 //		Usuario usuariotemp = new Usuario("", "", "", "", "", "");

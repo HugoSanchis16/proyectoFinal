@@ -111,6 +111,12 @@ public class menuPrincipal extends JFrame {
 		JButton botonPixelArt = new JButton("");
 		botonPixelArt.setOpaque(false);
 		botonPixelArt.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/pixelArtLogo.JPG")));
+		botonPixelArt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PixelArt.dibujarPixelArt(nom);
+			}
+			
+		});
 		panelJuegos.add(botonPixelArt);
 
 		JButton botonBuscaMinas = new JButton("");

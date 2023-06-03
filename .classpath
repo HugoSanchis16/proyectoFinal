@@ -8,5 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="flatlaf-demo-3.1.1.jar"/>
 	<classpathentry kind="lib" path="mariadb-java-client-3.1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ionat/eclipse-workspace/EjerciciosBD/mysql-connector-j-8.0.33.jar"/>
 	<classpathentry kind="output" path="proyectoFinal/bin"/>
 </classpath>
