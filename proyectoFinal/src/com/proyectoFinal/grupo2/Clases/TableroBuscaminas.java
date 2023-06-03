@@ -2,8 +2,6 @@ package com.proyectoFinal.grupo2.Clases;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,6 +12,9 @@ import java.util.Random;
 
 public class TableroBuscaminas implements Serializable {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	Casilla[][] casillas;

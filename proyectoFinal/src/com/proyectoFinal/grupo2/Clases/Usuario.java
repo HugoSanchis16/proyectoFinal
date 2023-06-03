@@ -86,12 +86,12 @@ public class Usuario {
 	private int id;
 	private String nombre;
 	private String apellidos;
-	private String imagen;
+	private byte[] imagen;
 	private String poblacion;
 	private String correoElectronico;
 	private String contrasena;
 	
-	public Usuario(int id, String nombre, String apellidos, String imagen, String poblacion, String correoElectronico,
+	public Usuario(int id, String nombre, String apellidos, byte[] imagen, String poblacion, String correoElectronico,
 			String contrasena) {
 		this.id = id;
 		this.nombre = nombre;
@@ -101,7 +101,7 @@ public class Usuario {
 		this.correoElectronico = correoElectronico;
 		this.contrasena = contrasena;
 	}
-	public Usuario(String nombre, String apellidos, String imagen, String poblacion, String correoElectronico,
+	public Usuario(String nombre, String apellidos, byte[] imagen, String poblacion, String correoElectronico,
 			String contrasena) {
 		this.id = id;
 		this.nombre = nombre;
@@ -136,11 +136,11 @@ public class Usuario {
 		this.apellidos = apellidos;
 	}
 
-	public String getImagen() {
+	public byte[] getImagen() {
 		return imagen;
 	}
 
-	public void setImagen(String imagen) {
+	public void setImagen(byte[] imagen) {
 		this.imagen = imagen;
 	}
 

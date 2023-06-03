@@ -1,10 +1,8 @@
 package com.proyectoFinal.grupo2.Clases;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 public class BD {
@@ -50,7 +48,6 @@ public class BD {
 		 */
 		
 		boolean contieneIPClase = false;
-		String ip = null;
 //		try {
 //			ip = Inet4Address.getLocalHost().getHostAddress();
 //		} catch (UnknownHostException e) {

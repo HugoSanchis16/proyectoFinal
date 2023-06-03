@@ -1,25 +1,22 @@
 package com.proyectoFinal.grupo2.Main;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.proyectoFinal.grupo2.Clases.BDUtils;
+import com.proyectoFinal.grupo2.Clases.Usuario;
 import com.proyectoFinal.grupo2.Juegos.*;
-
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import java.awt.GridLayout;
 import java.awt.Image;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -32,40 +29,17 @@ public class menuPrincipal extends JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private String nomUsuari;
 	private BuscaMinas ventanaBuscaMinas;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		
-		try {
-			UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					menuPrincipal frame = new menuPrincipal("Jose");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JocDeLaVida ventanaJuegoDeLaVida;
+	private VerPerfil verPerfil;
+	private String[] opcionesDialogo = { "Si", "No" };
 
 	/**
 	 * Create the frame.
 	 */
-	public menuPrincipal(String nom) {
+	public menuPrincipal(Usuario usuario) {
 		super("Menu Principal");
-		this.nomUsuari = nom;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 925, 600);
 
@@ -75,12 +49,25 @@ public class menuPrincipal extends JFrame {
 		JMenu mnNewMenu = new JMenu("Ajustes");
 		menuAjustes.add(mnNewMenu);
 
-		JMenuItem mntmNewMenuItem = new JMenuItem("Eliminar cuenta");
-		ImageIcon imagen = new ImageIcon(menuPrincipal.class.getResource("./Imagenes/cruzRoja.png"));
-		Image imageRedimensionada = imagen.getImage().getScaledInstance(25, -1, Image.SCALE_SMOOTH);
-		ImageIcon fotoRedimensionada = new ImageIcon(imageRedimensionada);
-		mntmNewMenuItem.setIcon(fotoRedimensionada);
-		mnNewMenu.add(mntmNewMenuItem);
+		JMenuItem verperfil = new JMenuItem("Ver Perfil");
+		verperfil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (verPerfil == null || !verPerfil.isVisible()) {
+					verPerfil = new VerPerfil(usuario, menuPrincipal.this);
+					verPerfil.setVisible(true);
+				}else {
+					verPerfil.setVisible(true);
+
+				}
+			}
+		});
+
+		ImageIcon imagenPerfil = new ImageIcon(menuPrincipal.class.getResource("./Imagenes/perfil.png"));
+		Image imageRedimensionada2 = imagenPerfil.getImage().getScaledInstance(25, -1, Image.SCALE_SMOOTH);
+		ImageIcon fotoRedimensionada2 = new ImageIcon(imageRedimensionada2);
+
+		verperfil.setIcon(fotoRedimensionada2);
+		mnNewMenu.add(verperfil);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -91,7 +78,7 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(panelBienvenida, BorderLayout.NORTH);
 		panelBienvenida.setLayout(new GridLayout(2, 1, 0, 0));
 
-		JLabel labelBienvenida = new JLabel("Bienvenido, " + nomUsuari);
+		JLabel labelBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
 		labelBienvenida.setBackground(new Color(255, 255, 255));
 		labelBienvenida.setFont(new Font("Arial", Font.BOLD, 30));
 		labelBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
@@ -124,17 +111,25 @@ public class menuPrincipal extends JFrame {
 		botonBuscaMinas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (ventanaBuscaMinas == null || !ventanaBuscaMinas.isVisible()) {
-					ventanaBuscaMinas = new BuscaMinas();
+					ventanaBuscaMinas = new BuscaMinas(usuario);
 				}
-				ventanaBuscaMinas.setVisible(true);
 			}
-
 		});
 		botonBuscaMinas.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/buscaminas.jpg")));
 		panelJuegos.add(botonBuscaMinas);
 
 		JButton botonJuegoDeLaVida = new JButton("");
 		botonJuegoDeLaVida.setOpaque(false);
+		botonJuegoDeLaVida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (ventanaJuegoDeLaVida == null || !ventanaJuegoDeLaVida.isVisible()) {
+					ventanaJuegoDeLaVida = new JocDeLaVida();
+					ventanaJuegoDeLaVida.mostrarMenutamaño();
+
+				}
+			}
+
+		});
 		botonJuegoDeLaVida.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/juegoDeLaVida.jpg")));
 		panelJuegos.add(botonJuegoDeLaVida);
 
@@ -144,15 +139,38 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(panelBotones, BorderLayout.SOUTH);
 
 		JButton botonCerrarSesion = new JButton("Cerrar Sesión");
-		botonCerrarSesion.setOpaque(false);
+		botonCerrarSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (ventanaBuscaMinas != null && ventanaBuscaMinas.isVisible()) {
+					String estiloCSS = "<html><body><p style='font-size: 16px;'>¿Desea guardar partida?</p></body></html>";
+					JLabel label = new JLabel(estiloCSS);
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+					int seleccion = JOptionPane.showOptionDialog(null, label, "Buscaminas", JOptionPane.DEFAULT_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, opcionesDialogo, opcionesDialogo[0]);
+					if (seleccion == 0) {
+						ventanaBuscaMinas.mostrarDialogoNombrePartida();
+
+					}
+					ventanaBuscaMinas.dispose();
+				}
+				if (ventanaJuegoDeLaVida != null && ventanaJuegoDeLaVida.isVisible()) {
+					ventanaJuegoDeLaVida.dispose();
+				}
+				Login login = new Login();
+				login.setVisible(true);
+				dispose();
+			}
+		});
 		botonCerrarSesion.setBorderPainted(false);
 		botonCerrarSesion.setFocusPainted(false);
-		botonCerrarSesion.setContentAreaFilled(false);
+		botonCerrarSesion.setContentAreaFilled(true);
 		botonCerrarSesion.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		botonCerrarSesion.setForeground(Color.WHITE);
 		botonCerrarSesion.setBackground(new Color(153, 0, 0)); // Cambia el color de fondo a rojo
 		botonCerrarSesion.setFont(new Font("Arial", Font.BOLD, 15));
 		panelBotones.add(botonCerrarSesion);
+		setLocationRelativeTo(null);
+
 	}
 
 }
