@@ -100,7 +100,7 @@ public class menuPrincipal extends JFrame {
 		botonPixelArt.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/pixelArtLogo.JPG")));
 		botonPixelArt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PixelArt.dibujarPixelArt(nom);
+				PixelArt.dibujarPixelArt(usuario.getNombre());
 			}
 			
 		});

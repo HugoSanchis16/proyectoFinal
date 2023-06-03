@@ -248,7 +248,7 @@ public class BDUtils {
 		return partidas;
 	}
 
-	}
+	
 	
 	public static ArrayList<HashMap<String, String>> recuperarPartidasPixelArt(String nombre) {
 		ArrayList<HashMap<String, String>> partidas = new ArrayList<HashMap<String, String>>();
