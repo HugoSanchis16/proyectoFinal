@@ -148,7 +148,8 @@ public class BDUtils {
 
 			Statement s = c.createStatement();
 			ResultSet r = s.executeQuery("SELECT usuario, MIN(tiempo) as tiempo FROM `buscaminas` "
-					+ "WHERE dificultad = 'Facil' AND tiempo > 0 " + "GROUP BY usuario " + "ORDER BY tiempo ASC " + "LIMIT 5");
+					+ "WHERE dificultad = 'Facil' AND tiempo > 0 " + "GROUP BY usuario " + "ORDER BY tiempo ASC "
+					+ "LIMIT 5");
 
 			while (r.next()) {
 				HashMap<String, String> temp = new HashMap<>();
@@ -175,7 +176,8 @@ public class BDUtils {
 
 			Statement s = c.createStatement();
 			ResultSet r = s.executeQuery("SELECT usuario, MIN(tiempo) as tiempo FROM `buscaminas` "
-					+ "WHERE dificultad = 'Medio' AND tiempo > 0 " + "GROUP BY usuario " + "ORDER BY tiempo ASC " + "LIMIT 5");
+					+ "WHERE dificultad = 'Medio' AND tiempo > 0 " + "GROUP BY usuario " + "ORDER BY tiempo ASC "
+					+ "LIMIT 5");
 
 			while (r.next()) {
 				HashMap<String, String> temp = new HashMap<>();
@@ -202,7 +204,8 @@ public class BDUtils {
 
 			Statement s = c.createStatement();
 			ResultSet r = s.executeQuery("SELECT usuario, MIN(tiempo) as tiempo FROM `buscaminas` "
-					+ "WHERE dificultad = 'Dificil' AND tiempo > 0 " + "GROUP BY usuario " + "ORDER BY tiempo ASC " + "LIMIT 5");
+					+ "WHERE dificultad = 'Dificil' AND tiempo > 0 " + "GROUP BY usuario " + "ORDER BY tiempo ASC "
+					+ "LIMIT 5");
 
 			while (r.next()) {
 				HashMap<String, String> temp = new HashMap<>();
@@ -248,32 +251,29 @@ public class BDUtils {
 		return partidas;
 	}
 
-	
-	
 	public static ArrayList<HashMap<String, String>> recuperarPartidasPixelArt(String nombre) {
 		ArrayList<HashMap<String, String>> partidas = new ArrayList<HashMap<String, String>>();
 		HashMap<String, String> temp = new HashMap<String, String>();
 		try {
 			elegirClaseBD();
-			
-			
+
 			Connection c = DriverManager.getConnection(urlBaseDades, usuariBD, contrasenyaBD);
-			
+
 			Statement s = c.createStatement();
 			ResultSet r = s.executeQuery("SELECT * FROM `pixelart` WHERE usuario='" + nombre + "'");
-			
+
 			while (r.next()) {
 				temp.put("usuario", r.getString("usuario"));
 				temp.put("nombre", r.getString("nombre"));
 				temp.put("matriz", r.getString("matriz"));
 				temp.put("fecha", r.getString("fecha"));
-				
+
 				partidas.add(temp);
 				System.out.println("sdfdg" + temp.toString());
-				
+
 				temp.clear();
 			}
-			
+
 			c.close();
 //			while (r.next()) {
 //				System.out.println("Total Alumnes: "+r.getInt("TOTAL"));
@@ -282,18 +282,18 @@ public class BDUtils {
 //			s = c.createStatement();
 //			r = s.executeQuery("SELECT * FROM alumne");
 //			
-			
+
 			// Tancar la connexió
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return partidas;
-		
+
 	}
-	
-	public static void guardarPartidaPixelArt(String nombre, String nombrePartida, String base64Partida) {
+
+	public static boolean guardarPartidaPixelArt(String nombre, String nombrePartida, String base64Partida) {
 		try {
 			elegirClaseBD();
 
@@ -302,16 +302,21 @@ public class BDUtils {
 			// Enviar una sentència SQL per recuperar els clients
 			Statement s = c.createStatement();
 			int r = s.executeUpdate(
-					"INSERT INTO `pixelart` (`id`, `usuario`, `nombre`, `fecha`, `matriz`) VALUES (NULL, '" + nombre + "', '" + nombrePartida + "', NULL, '" + base64Partida + "')");
+					"INSERT INTO `pixelart` (`id`, `usuario`, `nombre`, `fecha`, `matriz`) VALUES (NULL, '" + nombre
+							+ "', '" + nombrePartida + "', NULL, '" + base64Partida + "')");
 
 			// Tancar la connexió
 			c.close();
+
+			if (r > 0) {
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
-	
-	
+
 	// Crealo así
 //		Usuario usuariotemp = new Usuario("", "", "", "", "", "");
 //		Usuario usuario = BDUtils.registrarUsuario(usuariotemp);

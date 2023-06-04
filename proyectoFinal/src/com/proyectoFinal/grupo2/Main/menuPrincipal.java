@@ -20,6 +20,8 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -33,6 +35,7 @@ public class menuPrincipal extends JFrame {
 	private BuscaMinas ventanaBuscaMinas;
 	private JocDeLaVida ventanaJuegoDeLaVida;
 	private VerPerfil verPerfil;
+	private PixelArt ventanaPixelArt;
 	private String[] opcionesDialogo = { "Si", "No" };
 
 	/**
@@ -55,7 +58,7 @@ public class menuPrincipal extends JFrame {
 				if (verPerfil == null || !verPerfil.isVisible()) {
 					verPerfil = new VerPerfil(usuario, menuPrincipal.this);
 					verPerfil.setVisible(true);
-				}else {
+				} else {
 					verPerfil.setVisible(true);
 
 				}
@@ -100,9 +103,13 @@ public class menuPrincipal extends JFrame {
 		botonPixelArt.setIcon(new ImageIcon(menuPrincipal.class.getResource("./Imagenes/pixelArtLogo.JPG")));
 		botonPixelArt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PixelArt.dibujarPixelArt(usuario.getNombre());
+				if (ventanaPixelArt == null || !ventanaPixelArt.isVisible()) {
+					ventanaPixelArt = new PixelArt(usuario);
+				}else {
+					ventanaPixelArt.setVisible(true);
+				}
 			}
-			
+
 		});
 		panelJuegos.add(botonPixelArt);
 
@@ -112,6 +119,8 @@ public class menuPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (ventanaBuscaMinas == null || !ventanaBuscaMinas.isVisible()) {
 					ventanaBuscaMinas = new BuscaMinas(usuario);
+				}else {
+					ventanaBuscaMinas.setVisible(true);
 				}
 			}
 		});
@@ -125,7 +134,8 @@ public class menuPrincipal extends JFrame {
 				if (ventanaJuegoDeLaVida == null || !ventanaJuegoDeLaVida.isVisible()) {
 					ventanaJuegoDeLaVida = new JocDeLaVida();
 					ventanaJuegoDeLaVida.mostrarMenutamaño();
-
+				}else {
+					ventanaJuegoDeLaVida.setVisible(true);
 				}
 			}
 
@@ -153,6 +163,19 @@ public class menuPrincipal extends JFrame {
 					}
 					ventanaBuscaMinas.dispose();
 				}
+
+				if (ventanaPixelArt != null && ventanaPixelArt.isVisible()) {
+					String estiloCSS = "<html><body><p style='font-size: 16px;'>¿Desea guardar partida?</p></body></html>";
+					JLabel label = new JLabel(estiloCSS);
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+					int seleccion = JOptionPane.showOptionDialog(null, label, "PixelArt", JOptionPane.DEFAULT_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, opcionesDialogo, opcionesDialogo[0]);
+					if (seleccion == 0) {
+						ventanaPixelArt.mostrarDialogoNombrePartida();
+					}
+					ventanaPixelArt.dispose();
+				}
+
 				if (ventanaJuegoDeLaVida != null && ventanaJuegoDeLaVida.isVisible()) {
 					ventanaJuegoDeLaVida.dispose();
 				}
@@ -161,6 +184,78 @@ public class menuPrincipal extends JFrame {
 				dispose();
 			}
 		});
+
+		addWindowListener(new WindowListener() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (ventanaBuscaMinas != null && ventanaBuscaMinas.isVisible()) {
+					String estiloCSS = "<html><body><p style='font-size: 16px;'>¿Desea guardar partida?</p></body></html>";
+					JLabel label = new JLabel(estiloCSS);
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+					int seleccion = JOptionPane.showOptionDialog(null, label, "Buscaminas", JOptionPane.DEFAULT_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, opcionesDialogo, opcionesDialogo[0]);
+					if (seleccion == 0) {
+						ventanaBuscaMinas.mostrarDialogoNombrePartida();
+
+					}
+					ventanaBuscaMinas.dispose();
+				}
+
+				if (ventanaPixelArt != null && ventanaPixelArt.isVisible()) {
+					String estiloCSS = "<html><body><p style='font-size: 16px;'>¿Desea guardar partida?</p></body></html>";
+					JLabel label = new JLabel(estiloCSS);
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+					int seleccion = JOptionPane.showOptionDialog(null, label, "PixelArt", JOptionPane.DEFAULT_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, opcionesDialogo, opcionesDialogo[0]);
+					if (seleccion == 0) {
+						ventanaPixelArt.mostrarDialogoNombrePartida();
+					}
+					ventanaPixelArt.dispose();
+				}
+				if (ventanaJuegoDeLaVida != null && ventanaJuegoDeLaVida.isVisible()) {
+					ventanaJuegoDeLaVida.dispose();
+				}
+				dispose();
+			}
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+
 		botonCerrarSesion.setBorderPainted(false);
 		botonCerrarSesion.setFocusPainted(false);
 		botonCerrarSesion.setContentAreaFilled(true);

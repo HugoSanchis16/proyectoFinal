@@ -172,7 +172,6 @@ public class TableroBuscaminas implements Serializable {
 			for (int j = 0; j < casillas[i].length; j++) {
 				System.out.print(casillas[i][j].isMina() ? "*" : "0");
 			}
-			System.out.println("");
 		}
 	}
 

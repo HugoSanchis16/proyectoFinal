@@ -541,8 +541,6 @@ public class JocDeLaVida extends JFrame implements ActionListener {
 				}
 			}
 		}
-		System.out.println(hayCambio);
-		System.out.println(hayCambio2);
 
 		if ((!hayCambio || !hayCambio2) && generaciones > 0) {
 			detener();
@@ -599,8 +597,7 @@ public class JocDeLaVida extends JFrame implements ActionListener {
 			}
 
 		}
-		System.out.println(hayCambio);
-		System.out.println(hayCambio2);
+
 
 		if ((!hayCambio || !hayCambio2) && generaciones > 0) {
 			detener();
@@ -687,10 +684,8 @@ public class JocDeLaVida extends JFrame implements ActionListener {
 
 			do {
 				nuevoColor = arrayColores[aleatori.nextInt(9)];
-				System.out.println("Prevenir color repetido");
 			} while (nuevoColor.equals(colorDefault));
 			colorDefault = nuevoColor;
-			System.out.println("cambio color");
 		}
 
 		for (int i = 0; i < tablero.length; i++) {
