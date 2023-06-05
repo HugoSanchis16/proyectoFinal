@@ -84,6 +84,7 @@ public class PixelArt extends JFrame {
 	 */
 	public PixelArt(Usuario usuario) {
 		nombreUsuario = usuario.getNombre();
+		frame = this;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("PixelArt");
 		contentPane = new JPanel();
@@ -292,14 +293,6 @@ public class PixelArt extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				JLabel[][] matrizCopia = matriz.clone();
 				String base64String = serializeTablero(matrizCopia);
-				for (int i = 0; i < filas; i++) {
-					for (int j = 0; j < columnas; j++) {
-						if (("" + matriz[i][j].getBackground())
-								.equalsIgnoreCase("javax.swing.plaf.ColorUIResource[r=47,g=52,b=63]")) {
-							matriz[i][j].setBackground(new ColorUIResource(220, 220, 220));
-						}
-					}
-				}
 				JFrame frameNombrePartida = new JFrame();
 				// Diàleg de confirmació
 				// JComponent.setDefaultLocale(Locale.GERMAN);
@@ -308,7 +301,20 @@ public class PixelArt extends JFrame {
 					resposta = JOptionPane.showInputDialog(frame, // contenidor d'alt nivell
 							"Introduce el nombre de la partida"); // text
 				}
+				for (int i = 0; i < filas; i++) {
+					for (int j = 0; j < columnas; j++) {
+						if (("" + matriz[i][j].getBackground())
+								.equalsIgnoreCase("javax.swing.plaf.ColorUIResource[r=47,g=52,b=63]")) {
+							matriz[i][j].setBackground(new ColorUIResource(220, 220, 220));
+						}
+					}
+				}
 				BDUtils.guardarPartidaPixelArt(nombreUsuario, resposta, base64String);
+				panelTemporal.removeAll();
+				panelBotones.removeAll();
+				panelPrincipal.removeAll();
+				frame.removeAll();
+				frame.dispose();
 			}
 		});
 
